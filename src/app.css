@@ -152,3 +152,36 @@ html, body {
   0% { opacity: 0; transform: translateY(4px); }
   100% { opacity: 1; transform: translateY(0); }
 }
+
+/* US map container — make the inlined SVG responsive */
+.us-map svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+/* Override Wikimedia's hardcoded default state fill so it matches our palette */
+.us-map svg .state,
+.us-map svg path:not([fill]),
+.us-map svg g:not([fill]) {
+  fill: #e0e7ff;
+}
+/* Borders between states */
+.us-map svg [class*="-"] {
+  stroke: #c7d2fe;
+  stroke-width: 0.5;
+  fill: none;
+}
+/* Outer border */
+.us-map svg .borders {
+  stroke: #818cf8;
+  fill: none;
+}
+/* Subtle pulse on the highlighted state */
+.us-map svg [fill="#4f46e5"] {
+  animation: stateHighlight 2.4s ease-in-out infinite;
+  transform-origin: center;
+}
+@keyframes stateHighlight {
+  0%, 100% { filter: drop-shadow(0 0 0 rgba(79, 70, 229, 0)); }
+  50% { filter: drop-shadow(0 0 6px rgba(79, 70, 229, 0.7)); }
+}

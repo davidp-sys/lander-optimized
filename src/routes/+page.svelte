@@ -63,7 +63,11 @@
           </div>
 
           <h1 bind:this={headlineEl} class="mb-4 text-4xl font-black leading-tight tracking-tight text-gray-900 md:text-5xl lg:text-6xl">
-            Secure Up To<br class="md:hidden"><span class="hidden md:inline"> </span><span class="text-indigo-600 glisten-text">$40,000</span>
+            {#if data.state}
+              <span class="text-indigo-600">{data.state}</span> residents can secure up to <span class="text-indigo-600 glisten-text">$40,000</span>
+            {:else}
+              Secure Up To<br class="md:hidden"><span class="hidden md:inline"> </span><span class="text-indigo-600 glisten-text">$40,000</span>
+            {/if}
           </h1>
 
           <p class="mb-6 text-lg text-gray-600 md:text-xl">
@@ -121,14 +125,24 @@
         <!-- RIGHT: Social proof card -->
         <div class="flex-1 max-w-md w-full">
           <div class="rounded-2xl bg-white p-6 shadow-2xl border border-gray-300 relative z-10">
-            <div class="flex items-center gap-3 mb-5">
-              <div class="flex h-12 w-12 items-center justify-center rounded-full bg-green-100">
-                <svg class="h-6 w-6 text-green-600" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd"/></svg>
+            <!-- US Map with highlighted state -->
+            <div class="mb-5">
+              <div class="us-map relative rounded-xl bg-gradient-to-br from-indigo-50 to-purple-50 p-3 border border-indigo-100">
+                {@html data.mapSvg}
+                {#if data.stateCode}
+                  <div class="absolute top-3 right-3 inline-flex items-center gap-1.5 rounded-full bg-white/95 backdrop-blur px-3 py-1 text-xs font-bold text-indigo-700 shadow-sm border border-indigo-200">
+                    <svg class="h-3 w-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/></svg>
+                    {data.stateCode}
+                  </div>
+                {/if}
               </div>
-              <div>
-                <p class="text-sm text-gray-500">Application Status</p>
-                <p class="text-lg font-bold text-green-600">Funds Available!</p>
-              </div>
+              <p class="mt-3 text-center text-sm font-semibold text-gray-700">
+                {#if data.state}
+                  <span class="text-indigo-600">{data.state}</span> residents qualify for up to <span class="text-indigo-600">$40,000</span>
+                {:else}
+                  Available in all 50 states
+                {/if}
+              </p>
             </div>
             <div class="space-y-3">
               <div class="flex items-center justify-between rounded-xl bg-green-50 px-4 py-3">
