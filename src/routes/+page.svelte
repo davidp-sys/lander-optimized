@@ -66,7 +66,7 @@
             Trusted by 100,000+ Americans
           </div>
 
-          <h1 bind:this={headlineEl} class="mb-4 font-black leading-tight tracking-tight text-gray-900 {data.state ? 'text-3xl md:text-4xl lg:text-5xl' : 'text-4xl md:text-5xl lg:text-6xl'}">
+          <h1 bind:this={headlineEl} class="mb-4 font-black leading-tight tracking-tight text-gray-900 {data.state ? 'text-2xl sm:text-3xl md:text-4xl lg:text-5xl' : 'text-4xl md:text-5xl lg:text-6xl'}">
             {#if data.state}
               <span class="text-indigo-600">{data.state}</span> residents can<br>secure up to <span class="text-indigo-600 glisten-text">$40,000</span>
             {:else}
