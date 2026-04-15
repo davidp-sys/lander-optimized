@@ -145,7 +145,7 @@
             {/if}
           </div>
 
-          <div class="mb-6 inline-flex items-center gap-2 rounded-lg bg-orange-50 border border-orange-300 px-4 py-2 text-sm font-medium text-orange-700">
+          <div class="urgency-racetrack mb-6 inline-flex items-center gap-2 rounded-lg bg-orange-50 px-4 py-2 text-sm font-medium text-orange-700">
             <span class="pulse-dot inline-block h-2 w-2 rounded-full bg-orange-500"></span>
             <span><strong>{urgencyCount} people</strong> checking their amount right now</span>
           </div>

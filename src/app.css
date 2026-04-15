@@ -19,6 +19,63 @@ html, body {
   white-space: nowrap;
 }
 
+/* "Racetrack" border on the urgency pill: a bright highlight loops around the
+   rounded rectangle. We use the modern @property + conic-gradient trick:
+   - the element gets a 2px gradient "border" (via background + padding +
+     content-box mask)
+   - the gradient is mostly the calm border color, with a short bright arc
+   - we animate --racetrack-angle from 0 -> 360deg so the bright arc circles */
+@property --racetrack-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+.urgency-racetrack {
+  position: relative;
+  isolation: isolate;
+  background-color: #fff7ed; /* matches bg-orange-50 */
+  /* Gradient lives behind via ::before so the text sits cleanly on top */
+}
+.urgency-racetrack::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 2px; /* border thickness */
+  background: conic-gradient(
+    from var(--racetrack-angle),
+    #fdba74 0deg,                /* calm orange-300 */
+    #fdba74 280deg,
+    #fb923c 310deg,              /* brighter orange-400 */
+    #f97316 330deg,              /* bright orange-500 (the "headlight") */
+    #fb923c 350deg,
+    #fdba74 360deg
+  );
+  /* Mask trick: keep only the 2px ring, hide the interior */
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+          mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+          mask-composite: exclude;
+  pointer-events: none;
+  animation: racetrackSpin 2.4s linear infinite;
+}
+@keyframes racetrackSpin {
+  to { --racetrack-angle: 360deg; }
+}
+/* Fallback for browsers without @property support: still spin a static
+   conic gradient using a rotate transform on a wrapper-less element.
+   Most modern browsers support @property; this is a graceful degrade. */
+@supports not (background: conic-gradient(from 1deg, red, red)) {
+  .urgency-racetrack::before {
+    background: linear-gradient(90deg, #fdba74, #f97316, #fdba74);
+    animation: none;
+  }
+}
+
 .amount-btn {
   transition: all 0.2s ease;
   cursor: pointer;
