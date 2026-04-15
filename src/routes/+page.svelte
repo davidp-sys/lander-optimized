@@ -169,7 +169,7 @@
                 <span class="text-lg font-bold text-green-600">Low credit OK</span>
               </div>
             </div>
-            <div class="mt-5 rounded-xl bg-gray-50 border border-gray-200 p-4">
+            <div class="mt-5 rounded-xl bg-gray-50 border border-gray-200 p-4 lg:hidden">
               <div class="flex items-start gap-3">
                 <div class="flex-shrink-0 h-10 w-10 rounded-full bg-indigo-100 flex items-center justify-center text-sm font-bold text-indigo-600">SM</div>
                 <div>
