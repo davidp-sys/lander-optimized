@@ -3,11 +3,23 @@
 
   let { data } = $props();
 
+  let selectedAmount = $state(null);
+  let showCta = $state(false);
+  let showSticky = $state(false);
   let headlineEl;
   let urgencyCount = $state(Math.floor(Math.random() * 30) + 25);
   let geoRevealed = $state(false);
 
   const CTA_URL = 'https://t.emergencycashpro.com/lc';
+
+  function selectAmount(amount) {
+    if (selectedAmount === amount) {
+      window.location.href = CTA_URL;
+      return;
+    }
+    selectedAmount = amount;
+    showCta = true;
+  }
 
   // Dynamically size the geo-headline so it always renders as exactly 2 lines.
   // Each line is a `display:block; white-space:nowrap` span, so its
@@ -50,6 +62,14 @@
   }
 
   onMount(() => {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        showSticky = !entry.isIntersecting;
+      });
+    }, { threshold: 0 });
+
+    if (headlineEl) observer.observe(headlineEl);
+
     // Hold the scanning animation for ~1.2s so the reveal feels intentional,
     // even though the state is already known server-side.
     const t = setTimeout(() => { geoRevealed = true; }, 1200);
@@ -68,6 +88,7 @@
     }
 
     return () => {
+      observer.disconnect();
       clearTimeout(t);
       window.removeEventListener('resize', onResize);
       clearTimeout(resizeTimer);
@@ -79,7 +100,7 @@
   <title>Secure Your Personal Loan - Up to $40,000</title>
 </svelte:head>
 
-<div class="bg-white text-gray-900 overflow-x-hidden max-w-[100vw] pb-24">
+<div class="bg-white text-gray-900 overflow-x-hidden max-w-[100vw]">
 
   {#if data.debug}
     <pre class="fixed top-2 right-2 z-[9999] max-w-lg max-h-[80vh] overflow-auto bg-black/90 text-green-300 text-xs p-3 rounded shadow-2xl whitespace-pre-wrap break-words">{JSON.stringify(data.debug, null, 2)}</pre>
@@ -129,43 +150,67 @@
             <span><strong>{urgencyCount} people</strong> checking their amount right now</span>
           </div>
 
-          <!-- MAP (below urgency pill) -->
-          <div class="mb-6 relative z-10">
-            <div class="relative rounded-xl overflow-hidden border border-indigo-100 shadow-sm" style="aspect-ratio: 16 / 11;">
-              {#if data.state}
-                <iframe
-                  title="Map of {data.state}"
-                  src="https://www.google.com/maps?q={encodeURIComponent(data.state + ' State, USA')}&t=&z=5&ie=UTF8&iwloc=&output=embed"
-                  class="absolute inset-0 w-full h-full border-0"
-                  loading="lazy"
-                  referrerpolicy="no-referrer-when-downgrade"
-                ></iframe>
-                <div class="pointer-events-none absolute top-2 right-2 rounded-full bg-white/95 backdrop-blur px-2.5 py-0.5 text-[11px] font-bold text-indigo-700 shadow border border-indigo-200">
-                  {data.stateCode}
-                </div>
-              {:else}
-                <iframe
-                  title="Map of United States"
-                  src="https://www.google.com/maps?q=United+States&t=&z=4&ie=UTF8&iwloc=&output=embed"
-                  class="absolute inset-0 w-full h-full border-0"
-                  loading="lazy"
-                  referrerpolicy="no-referrer-when-downgrade"
-                ></iframe>
-              {/if}
+          <!-- MICRO-FORM -->
+          <div class="mb-6 rounded-2xl bg-white p-6 shadow-2xl border border-gray-300 relative z-10" id="loan-form">
+            <p class="mb-4 text-base font-semibold text-gray-800">How much do you need?</p>
+            <div class="grid grid-cols-2 gap-3 sm:grid-cols-4">
+              {#each [10000, 20000, 30000, 40000] as amount}
+                <button
+                  class="amount-btn rounded-xl border-2 px-4 py-3 text-center font-bold text-lg {selectedAmount === amount ? 'selected border-indigo-600 bg-indigo-600 text-white' : 'border-indigo-200 bg-indigo-50 text-indigo-700'}"
+                  onclick={() => selectAmount(amount)}
+                >
+                  ${amount.toLocaleString()}
+                </button>
+              {/each}
             </div>
-            <p class="mt-3 text-center lg:text-left text-sm font-semibold text-gray-700">
-              {#if data.state}
-                <span class="text-indigo-600">{data.state}</span> residents qualify for up to <span class="text-indigo-600">$40,000</span>
-              {:else}
-                Available in all 50 states
-              {/if}
-            </p>
+
+            <a href={CTA_URL} class="main-cta cta-pulse block w-full rounded-xl bg-indigo-600 px-8 text-center text-lg font-bold text-white shadow-lg hover:bg-indigo-700 transition-colors {showCta ? 'show' : ''}">
+              Check If You Qualify <span class="ml-1">&rarr;</span>
+            </a>
+
+            <div class="mt-3 flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-xs text-gray-500">
+              <span class="flex items-center gap-1"><svg class="h-3.5 w-3.5 text-green-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clip-rule="evenodd"/></svg> Low credit approvals</span>
+              <span class="flex items-center gap-1"><svg class="h-3.5 w-3.5 text-green-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clip-rule="evenodd"/></svg> Free to apply</span>
+              <span class="flex items-center gap-1"><svg class="h-3.5 w-3.5 text-green-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clip-rule="evenodd"/></svg> 256-bit encrypted</span>
+            </div>
           </div>
         </div>
 
         <!-- RIGHT: Social proof card -->
         <div class="flex-1 max-w-md w-full">
           <div class="rounded-2xl bg-white p-6 shadow-2xl border border-gray-300 relative z-10">
+            <!-- Google Maps embed centered on visitor's state -->
+            <div class="mb-5">
+              <div class="relative rounded-xl overflow-hidden border border-indigo-100 shadow-sm" style="aspect-ratio: 16 / 11;">
+                {#if data.state}
+                  <iframe
+                    title="Map of {data.state}"
+                    src="https://www.google.com/maps?q={encodeURIComponent(data.state + ' State, USA')}&t=&z=5&ie=UTF8&iwloc=&output=embed"
+                    class="absolute inset-0 w-full h-full border-0"
+                    loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade"
+                  ></iframe>
+                  <div class="pointer-events-none absolute top-2 right-2 rounded-full bg-white/95 backdrop-blur px-2.5 py-0.5 text-[11px] font-bold text-indigo-700 shadow border border-indigo-200">
+                    {data.stateCode}
+                  </div>
+                {:else}
+                  <iframe
+                    title="Map of United States"
+                    src="https://www.google.com/maps?q=United+States&t=&z=4&ie=UTF8&iwloc=&output=embed"
+                    class="absolute inset-0 w-full h-full border-0"
+                    loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade"
+                  ></iframe>
+                {/if}
+              </div>
+              <p class="mt-3 text-center text-sm font-semibold text-gray-700">
+                {#if data.state}
+                  <span class="text-indigo-600">{data.state}</span> residents qualify for up to <span class="text-indigo-600">$40,000</span>
+                {:else}
+                  Available in all 50 states
+                {/if}
+              </p>
+            </div>
             <div class="space-y-3">
               <div class="flex items-center justify-between rounded-xl bg-green-50 px-4 py-3">
                 <span class="text-sm font-medium text-gray-700">Loan Amount</span>
@@ -336,10 +381,10 @@
     </div>
   </footer>
 
-  <!-- FIXED BOTTOM CTA (always visible) -->
-  <div class="fixed bottom-0 left-0 w-full z-50 bg-white/95 backdrop-blur border-t border-gray-200 py-3 px-4 shadow-2xl">
+  <!-- STICKY CTA -->
+  <div class="sticky-cta fixed bottom-0 left-0 w-full z-50 bg-white/95 backdrop-blur border-t border-gray-200 py-3 px-4 shadow-2xl {showSticky ? 'visible' : ''}">
     <div class="flex flex-col items-center">
-      <a href={CTA_URL} class="cta-pulse rounded-xl bg-indigo-600 px-10 py-3.5 text-base font-bold text-white shadow-lg hover:bg-indigo-700 transition-colors">
+      <a href={CTA_URL} class="rounded-xl bg-indigo-600 px-10 py-3.5 text-base font-bold text-white shadow-lg hover:bg-indigo-700 transition-colors">
         Check If You Qualify &rarr;
       </a>
       <p class="mt-1.5 text-xs text-gray-400">Free to apply &bull; Low credit approvals</p>
