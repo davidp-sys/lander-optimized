@@ -87,27 +87,11 @@
       document.fonts.ready.then(fitHeadline).catch(() => {});
     }
 
-    // Rotating glow border driver — ticks --angle on the urgency pill at
-    // 60fps via requestAnimationFrame. ~0.6deg/frame ≈ one full loop every
-    // 10 seconds, slow enough to feel like a smooth glisten rather than a
-    // chase. Pauses when the tab is hidden (rAF is throttled by the browser).
-    const racetrackEls = document.querySelectorAll('.urgency-racetrack');
-    let angle = 0;
-    let rafId;
-    const tick = () => {
-      angle = (angle + 0.6) % 360;
-      const a = `${angle}deg`;
-      racetrackEls.forEach((el) => el.style.setProperty('--angle', a));
-      rafId = requestAnimationFrame(tick);
-    };
-    if (racetrackEls.length) rafId = requestAnimationFrame(tick);
-
     return () => {
       observer.disconnect();
       clearTimeout(t);
       window.removeEventListener('resize', onResize);
       clearTimeout(resizeTimer);
-      if (rafId) cancelAnimationFrame(rafId);
     };
   });
 </script>
@@ -161,7 +145,7 @@
             {/if}
           </div>
 
-          <div class="urgency-racetrack mb-6 inline-flex items-center gap-2 rounded-lg bg-orange-50 px-4 py-2 text-sm font-medium text-orange-700">
+          <div class="mb-6 inline-flex items-center gap-2 rounded-lg bg-orange-50 border border-orange-300 px-4 py-2 text-sm font-medium text-orange-700">
             <span class="pulse-dot inline-block h-2 w-2 rounded-full bg-orange-500"></span>
             <span><strong>{urgencyCount} people</strong> checking their amount right now</span>
           </div>

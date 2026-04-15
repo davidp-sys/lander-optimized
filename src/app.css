@@ -19,28 +19,6 @@ html, body {
   white-space: nowrap;
 }
 
-/* Rotating glow border on the urgency pill (technique from
-   dev.to/shofol/create-eye-catching-button-effect-with-rotating-glow-animation).
-   Two-layer background: solid orange via padding-box covers the interior;
-   conic-gradient via border-box shows only in the 2px border ring. The --angle
-   custom property is driven by requestAnimationFrame in +page.svelte for
-   buttery 60fps motion (smoother than CSS @keyframes on conic-gradients). */
-.urgency-racetrack {
-  border: 2px solid transparent;
-  background:
-    linear-gradient(#fff7ed, #fff7ed) padding-box,
-    conic-gradient(
-      from var(--angle, 0deg),
-      transparent 0%,
-      #fdba74 8%,         /* warm orange-300 trail */
-      #fb923c 12%,        /* brighter orange-400 */
-      #f97316 15%,        /* bright orange-500 — the "headlight" */
-      #fb923c 18%,
-      #fdba74 22%,
-      transparent 30%,
-      transparent 100%
-    ) border-box;
-}
 
 .amount-btn {
   transition: all 0.2s ease;
