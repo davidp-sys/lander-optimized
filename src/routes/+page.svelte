@@ -106,6 +106,34 @@
     <pre class="fixed top-2 right-2 z-[9999] max-w-lg max-h-[80vh] overflow-auto bg-black/90 text-green-300 text-xs p-3 rounded shadow-2xl whitespace-pre-wrap break-words">{JSON.stringify(data.debug, null, 2)}</pre>
   {/if}
 
+  <!-- APPROVAL TICKER (top of page) -->
+  <div class="bg-gray-900 py-3 overflow-hidden">
+    <div class="flex whitespace-nowrap">
+      <div class="ticker-scroll flex gap-8 text-sm text-gray-300">
+        {#each [
+          { name: 'James R.', state: 'FL', amount: '$12,500', time: '2 min ago' },
+          { name: 'Maria L.', state: 'CA', amount: '$30,000', time: '5 min ago' },
+          { name: 'David K.', state: 'TX', amount: '$8,000', time: '8 min ago' },
+          { name: 'Linda P.', state: 'OH', amount: '$22,000', time: '11 min ago' },
+          { name: 'Marcus W.', state: 'GA', amount: '$40,000', time: '14 min ago' },
+          { name: 'Amy T.', state: 'AZ', amount: '$18,500', time: '17 min ago' },
+        ] as item}
+          <span class="flex items-center gap-2"><span class="h-2 w-2 rounded-full bg-green-400"></span> {item.name} ({item.state}) approved for {item.amount} &mdash; {item.time}</span>
+        {/each}
+        {#each [
+          { name: 'James R.', state: 'FL', amount: '$12,500', time: '2 min ago' },
+          { name: 'Maria L.', state: 'CA', amount: '$30,000', time: '5 min ago' },
+          { name: 'David K.', state: 'TX', amount: '$8,000', time: '8 min ago' },
+          { name: 'Linda P.', state: 'OH', amount: '$22,000', time: '11 min ago' },
+          { name: 'Marcus W.', state: 'GA', amount: '$40,000', time: '14 min ago' },
+          { name: 'Amy T.', state: 'AZ', amount: '$18,500', time: '17 min ago' },
+        ] as item}
+          <span class="flex items-center gap-2"><span class="h-2 w-2 rounded-full bg-green-400"></span> {item.name} ({item.state}) approved for {item.amount} &mdash; {item.time}</span>
+        {/each}
+      </div>
+    </div>
+  </div>
+
   <!-- HERO SECTION -->
   <section class="relative overflow-hidden bg-gradient-to-br from-indigo-100 via-purple-100 to-blue-100 min-h-screen md:min-h-0">
     <div class="absolute left-0 top-0 h-[500px] w-[500px] rounded-full bg-gradient-to-br from-blue-300/20 to-indigo-400/20 blur-3xl pointer-events-none" aria-hidden="true"></div>
@@ -116,11 +144,6 @@
 
         <!-- LEFT: Copy + Form -->
         <div class="flex-1 text-center lg:text-left">
-          <div class="mb-4 inline-flex items-center gap-2 rounded-full border border-green-200 bg-green-50 px-4 py-1.5 text-sm font-medium text-green-700">
-            <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd"/></svg>
-            Trusted by 100,000+ Americans
-          </div>
-
           <h1 bind:this={headlineEl} class="mb-4 font-black leading-tight tracking-tight text-gray-900 {data.state ? 'state-headline' : 'text-4xl md:text-5xl lg:text-6xl'}">
             {#if data.state}
               <span class="headline-line"><span class="text-indigo-600">{data.state}</span> residents</span>
@@ -247,34 +270,6 @@
   <div class="relative overflow-hidden bg-gradient-to-br from-indigo-100 via-purple-100 to-blue-100">
     <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-[600px] w-[600px] rounded-full bg-gradient-to-br from-blue-300/30 to-indigo-400/30 blur-3xl pointer-events-none" aria-hidden="true"></div>
     <div class="absolute left-1/2 top-1/2 -translate-x-1/3 -translate-y-1/3 h-[500px] w-[500px] rounded-full bg-gradient-to-br from-purple-300/25 to-pink-300/25 blur-3xl pointer-events-none" aria-hidden="true"></div>
-
-    <!-- TICKER -->
-    <div class="bg-gray-900 py-3 overflow-hidden">
-      <div class="flex whitespace-nowrap">
-        <div class="ticker-scroll flex gap-8 text-sm text-gray-300">
-          {#each [
-            { name: 'James R.', state: 'FL', amount: '$12,500', time: '2 min ago' },
-            { name: 'Maria L.', state: 'CA', amount: '$30,000', time: '5 min ago' },
-            { name: 'David K.', state: 'TX', amount: '$8,000', time: '8 min ago' },
-            { name: 'Linda P.', state: 'OH', amount: '$22,000', time: '11 min ago' },
-            { name: 'Marcus W.', state: 'GA', amount: '$40,000', time: '14 min ago' },
-            { name: 'Amy T.', state: 'AZ', amount: '$18,500', time: '17 min ago' },
-          ] as item}
-            <span class="flex items-center gap-2"><span class="h-2 w-2 rounded-full bg-green-400"></span> {item.name} ({item.state}) approved for {item.amount} &mdash; {item.time}</span>
-          {/each}
-          {#each [
-            { name: 'James R.', state: 'FL', amount: '$12,500', time: '2 min ago' },
-            { name: 'Maria L.', state: 'CA', amount: '$30,000', time: '5 min ago' },
-            { name: 'David K.', state: 'TX', amount: '$8,000', time: '8 min ago' },
-            { name: 'Linda P.', state: 'OH', amount: '$22,000', time: '11 min ago' },
-            { name: 'Marcus W.', state: 'GA', amount: '$40,000', time: '14 min ago' },
-            { name: 'Amy T.', state: 'AZ', amount: '$18,500', time: '17 min ago' },
-          ] as item}
-            <span class="flex items-center gap-2"><span class="h-2 w-2 rounded-full bg-green-400"></span> {item.name} ({item.state}) approved for {item.amount} &mdash; {item.time}</span>
-          {/each}
-        </div>
-      </div>
-    </div>
 
     <!-- STATS BAR -->
     <div class="relative py-10 md:py-18">
