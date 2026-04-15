@@ -123,42 +123,28 @@
         <!-- RIGHT: Social proof card -->
         <div class="flex-1 max-w-md w-full">
           <div class="rounded-2xl bg-white p-6 shadow-2xl border border-gray-300 relative z-10">
-            <!-- Google Maps embed centered on visitor's state. We can't remove
-                 Google's chrome (satellite toggle, "open in maps", attribution)
-                 via the embed URL, so we cover those corners with opaque white
-                 strips and disable pointer events on the iframe so the map is
-                 purely decorative. -->
+            <!-- Google Maps embed centered on visitor's state -->
             <div class="mb-5">
-              <div class="relative rounded-xl overflow-hidden border border-indigo-100 shadow-sm bg-white" style="aspect-ratio: 16 / 11;">
+              <div class="relative rounded-xl overflow-hidden border border-indigo-100 shadow-sm" style="aspect-ratio: 16 / 11;">
                 {#if data.state}
                   <iframe
                     title="Map of {data.state}"
                     src="https://www.google.com/maps?q={encodeURIComponent(data.state + ' State, USA')}&t=&z=6&ie=UTF8&iwloc=&output=embed"
-                    class="absolute inset-0 w-full h-full border-0 pointer-events-none"
+                    class="absolute inset-0 w-full h-full border-0"
                     loading="lazy"
                     referrerpolicy="no-referrer-when-downgrade"
                   ></iframe>
-                  <!-- Cover Google's UI: top-left strip hides Map/Satellite toggle,
-                       top-right corner hides "View larger map" link, bottom strip
-                       hides "Map data ©…/Terms" attribution. -->
-                  <div class="pointer-events-none absolute top-0 left-0 h-10 w-32 bg-white"></div>
-                  <div class="pointer-events-none absolute top-0 right-0 h-10 w-40 bg-white"></div>
-                  <div class="pointer-events-none absolute bottom-0 left-0 right-0 h-5 bg-white"></div>
-                  <!-- State badge sits on top of the right cover strip. -->
-                  <div class="pointer-events-none absolute top-2 right-2 rounded-full bg-white px-2.5 py-0.5 text-[11px] font-bold text-indigo-700 shadow border border-indigo-200">
+                  <div class="pointer-events-none absolute top-2 right-2 rounded-full bg-white/95 backdrop-blur px-2.5 py-0.5 text-[11px] font-bold text-indigo-700 shadow border border-indigo-200">
                     {data.stateCode}
                   </div>
                 {:else}
                   <iframe
                     title="Map of United States"
                     src="https://www.google.com/maps?q=United+States&t=&z=4&ie=UTF8&iwloc=&output=embed"
-                    class="absolute inset-0 w-full h-full border-0 pointer-events-none"
+                    class="absolute inset-0 w-full h-full border-0"
                     loading="lazy"
                     referrerpolicy="no-referrer-when-downgrade"
                   ></iframe>
-                  <div class="pointer-events-none absolute top-0 left-0 h-10 w-32 bg-white"></div>
-                  <div class="pointer-events-none absolute top-0 right-0 h-10 w-40 bg-white"></div>
-                  <div class="pointer-events-none absolute bottom-0 left-0 right-0 h-5 bg-white"></div>
                 {/if}
               </div>
               <p class="mt-3 text-center text-sm font-semibold text-gray-700">
