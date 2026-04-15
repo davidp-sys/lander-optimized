@@ -21,6 +21,44 @@
     showCta = true;
   }
 
+  // Dynamically size the geo-headline so it always renders as exactly 2 lines.
+  // Each line is a `display:block; white-space:nowrap` span, so its
+  // scrollWidth at any font size tells us the natural rendered width. We
+  // measure both lines at a known baseline, take the wider one, then scale
+  // the headline font so that wider line fills ~96% of the container width.
+  // Result: state names of any length (Washington -> District of Columbia)
+  // get a custom-fit font size that maxes out the available space without
+  // ever wrapping to a 3rd line.
+  function fitHeadline() {
+    if (!headlineEl) return;
+    if (!data.state) return; // only the geo variant has the .headline-line spans
+    const lines = headlineEl.querySelectorAll('.headline-line');
+    if (!lines.length) return;
+
+    const containerWidth = headlineEl.clientWidth;
+    if (containerWidth <= 0) return;
+
+    const baselineSize = 64;
+    headlineEl.style.fontSize = `${baselineSize}px`;
+
+    let maxLineWidth = 0;
+    lines.forEach((l) => {
+      if (l.scrollWidth > maxLineWidth) maxLineWidth = l.scrollWidth;
+    });
+    if (maxLineWidth <= 0) return;
+
+    // Per-breakpoint cap so the headline never goes absurdly large on huge
+    // monitors. Tuned to roughly match the previous tailwind sizes.
+    const vw = window.innerWidth;
+    const maxAllowed = vw >= 1024 ? 60 : vw >= 640 ? 48 : 40;
+    const minAllowed = 18;
+    const targetFill = 0.96;
+
+    const ideal = (containerWidth * targetFill * baselineSize) / maxLineWidth;
+    const finalSize = Math.max(minAllowed, Math.min(maxAllowed, ideal));
+    headlineEl.style.fontSize = `${finalSize}px`;
+  }
+
   onMount(() => {
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
@@ -34,9 +72,24 @@
     // even though the state is already known server-side.
     const t = setTimeout(() => { geoRevealed = true; }, 1200);
 
+    // Dynamic 2-line headline fit
+    fitHeadline();
+    let resizeTimer;
+    const onResize = () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(fitHeadline, 80);
+    };
+    window.addEventListener('resize', onResize);
+    // Inter loads async via Google Fonts; metrics shift once it's ready.
+    if (typeof document !== 'undefined' && document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(fitHeadline).catch(() => {});
+    }
+
     return () => {
       observer.disconnect();
       clearTimeout(t);
+      window.removeEventListener('resize', onResize);
+      clearTimeout(resizeTimer);
     };
   });
 </script>
@@ -68,7 +121,8 @@
 
           <h1 bind:this={headlineEl} class="mb-4 font-black leading-tight tracking-tight text-gray-900 {data.state ? 'state-headline' : 'text-4xl md:text-5xl lg:text-6xl'}">
             {#if data.state}
-              <span class="text-indigo-600">{data.state}</span> residents<br>can secure up to <span class="text-indigo-600 glisten-text">$40,000</span>
+              <span class="headline-line"><span class="text-indigo-600">{data.state}</span> residents</span>
+              <span class="headline-line">can secure up to <span class="text-indigo-600 glisten-text">$40,000</span></span>
             {:else}
               Secure Up To<br class="md:hidden"><span class="hidden md:inline"> </span><span class="text-indigo-600 glisten-text">$40,000</span>
             {/if}
