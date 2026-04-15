@@ -47,12 +47,14 @@
     });
     if (maxLineWidth <= 0) return;
 
-    // Per-breakpoint cap so the headline never goes absurdly large on huge
-    // monitors. Tuned to roughly match the previous tailwind sizes.
+    // Per-breakpoint cap matches the original tailwind sizes (text-3xl /
+    // text-4xl / text-5xl). Short state names hit the cap and look "normal"
+    // — only longer state names ("Massachusetts", "District of Columbia")
+    // shrink below it to fit on 2 lines.
     const vw = window.innerWidth;
-    const maxAllowed = vw >= 1024 ? 60 : vw >= 640 ? 48 : 40;
+    const maxAllowed = vw >= 1024 ? 48 : vw >= 640 ? 36 : 30;
     const minAllowed = 18;
-    const targetFill = 0.96;
+    const targetFill = 0.92;
 
     const ideal = (containerWidth * targetFill * baselineSize) / maxLineWidth;
     const finalSize = Math.max(minAllowed, Math.min(maxAllowed, ideal));
