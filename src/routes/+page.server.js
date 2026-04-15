@@ -3,6 +3,17 @@
 // state via ipwho.is. Falls back to null if anything fails — page still renders.
 
 import mapSvgRaw from '$lib/us-map.svg?raw';
+import statesGeoJsonRaw from '$lib/states.geojson?raw';
+
+const STATES_GEOJSON = JSON.parse(statesGeoJsonRaw);
+
+function findStateFeature(stateName) {
+  if (!stateName) return null;
+  const target = stateName.toLowerCase();
+  return STATES_GEOJSON.features.find(
+    (f) => (f.properties?.name || '').toLowerCase() === target
+  ) || null;
+}
 
 export const prerender = false;
 
@@ -246,12 +257,17 @@ export async function load({ request, getClientAddress, fetch, url }) {
   const viewBox = computeViewBox(mapSvgRaw, stateCode);
   const mapSvg = injectStateHighlight(normalizeSvg(mapSvgRaw, viewBox), stateCode);
 
+  // Look up the visitor's state polygon. Only ship the one feature, not the
+  // whole 89KB collection — saves bytes and the client only needs one shape.
+  const stateFeature = findStateFeature(state);
+
   console.log(`[geo] ip=${ip} state=${state} code=${stateCode} country=${country} src=${lookupSource} err=${lookupError || 'none'}`);
 
   return {
     state,
     stateCode,
     mapSvg,
+    stateFeature,
     debug: debug ? { ip, state, stateCode, country, lookupSource, lookupError, raw, headers: Object.fromEntries(request.headers) } : null,
   };
 }
