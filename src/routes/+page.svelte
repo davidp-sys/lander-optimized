@@ -47,6 +47,10 @@
 
 <div class="bg-white text-gray-900 overflow-x-hidden max-w-[100vw]">
 
+  {#if data.debug}
+    <pre class="fixed top-2 right-2 z-[9999] max-w-lg max-h-[80vh] overflow-auto bg-black/90 text-green-300 text-xs p-3 rounded shadow-2xl whitespace-pre-wrap break-words">{JSON.stringify(data.debug, null, 2)}</pre>
+  {/if}
+
   <!-- HERO SECTION -->
   <section class="relative overflow-hidden bg-gradient-to-br from-indigo-100 via-purple-100 to-blue-100 min-h-screen md:min-h-0">
     <div class="absolute left-0 top-0 h-[500px] w-[500px] rounded-full bg-gradient-to-br from-blue-300/20 to-indigo-400/20 blur-3xl pointer-events-none" aria-hidden="true"></div>
