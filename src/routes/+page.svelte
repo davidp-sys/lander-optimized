@@ -129,7 +129,7 @@
                 {#if data.state}
                   <iframe
                     title="Map of {data.state}"
-                    src="https://www.google.com/maps?q={encodeURIComponent(data.state + ' State, USA')}&t=&z=5.7&ie=UTF8&iwloc=&output=embed"
+                    src="https://www.google.com/maps?q={encodeURIComponent(data.state + ' State, USA')}&t=&z=5&ie=UTF8&iwloc=&output=embed"
                     class="absolute inset-0 w-full h-full border-0"
                     loading="lazy"
                     referrerpolicy="no-referrer-when-downgrade"
