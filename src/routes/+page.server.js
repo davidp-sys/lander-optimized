@@ -41,7 +41,7 @@ function pathBBox(d) {
   const tokens = d.match(/[a-zA-Z]|-?\d*\.?\d+(?:e-?\d+)?/g);
   if (!tokens) return null;
   let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
-  let cx = 0, cy = 0, cmd = '';
+  let cx = 0, cy = 0, sx = 0, sy = 0, cmd = '';
   let i = 0;
 
   function track(x, y) {
@@ -53,19 +53,33 @@ function pathBBox(d) {
 
   while (i < tokens.length) {
     const t = tokens[i];
-    if (/[a-zA-Z]/.test(t)) { cmd = t; i++; continue; }
+    if (/[a-zA-Z]/.test(t)) {
+      cmd = t;
+      i++;
+      // 'z' takes no coordinates — execute it immediately and move on.
+      if (cmd === 'z' || cmd === 'Z') {
+        cx = sx; cy = sy;
+      }
+      continue;
+    }
     const abs = cmd === cmd.toUpperCase();
     const lc = cmd.toLowerCase();
 
-    if (lc === 'm' || lc === 'l' || lc === 't') {
+    if (lc === 'm') {
+      const x = parseFloat(tokens[i++]);
+      const y = parseFloat(tokens[i++]);
+      cx = abs ? x : cx + x;
+      cy = abs ? y : cy + y;
+      sx = cx; sy = cy;        // remember subpath start for 'z'
+      track(cx, cy);
+      // implicit lineto after moveto, same case
+      cmd = abs ? 'L' : 'l';
+    } else if (lc === 'l' || lc === 't') {
       const x = parseFloat(tokens[i++]);
       const y = parseFloat(tokens[i++]);
       cx = abs ? x : cx + x;
       cy = abs ? y : cy + y;
       track(cx, cy);
-      // implicit lineto after moveto
-      if (cmd === 'M') cmd = 'L';
-      else if (cmd === 'm') cmd = 'l';
     } else if (lc === 'h') {
       const x = parseFloat(tokens[i++]);
       cx = abs ? x : cx + x;
@@ -97,7 +111,7 @@ function pathBBox(d) {
       track(X, Y);
       cx = X; cy = Y;
     } else if (lc === 'z') {
-      // close path — no coords
+      cx = sx; cy = sy;        // return to subpath start
     } else {
       i++; // skip unknown
     }
