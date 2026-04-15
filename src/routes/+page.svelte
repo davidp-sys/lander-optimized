@@ -9,65 +9,8 @@
   let headlineEl;
   let urgencyCount = $state(Math.floor(Math.random() * 30) + 25);
   let geoRevealed = $state(false);
-  let mapEl;
-  let mapInstance = null;
 
   const CTA_URL = 'https://t.emergencycashpro.com/lc';
-
-  // Wait for the Leaflet global to land (loaded via CDN with `defer` in app.html).
-  function waitForLeaflet(timeoutMs = 4000) {
-    return new Promise((resolve, reject) => {
-      const start = Date.now();
-      (function poll() {
-        if (typeof window !== 'undefined' && window.L) return resolve(window.L);
-        if (Date.now() - start > timeoutMs) return reject(new Error('Leaflet did not load'));
-        setTimeout(poll, 50);
-      })();
-    });
-  }
-
-  async function mountStateMap() {
-    if (!mapEl || !data.stateFeature) return;
-    let L;
-    try { L = await waitForLeaflet(); } catch (e) { console.warn('[map]', e); return; }
-
-    // All controls/interactions disabled — this is a static-feeling decoration,
-    // not a real map widget. CartoDB Voyager tiles are free, no API key, and
-    // visually look like Google Maps' street style.
-    mapInstance = L.map(mapEl, {
-      zoomControl: false,
-      attributionControl: false,
-      dragging: false,
-      scrollWheelZoom: false,
-      doubleClickZoom: false,
-      touchZoom: false,
-      boxZoom: false,
-      keyboard: false,
-      tap: false,
-    });
-
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-      maxZoom: 12,
-      subdomains: 'abcd',
-    }).addTo(mapInstance);
-
-    const polygon = L.geoJSON(data.stateFeature, {
-      style: {
-        color: '#4f46e5',
-        weight: 2.5,
-        opacity: 1,
-        fillColor: '#4f46e5',
-        fillOpacity: 0.18,
-      },
-    }).addTo(mapInstance);
-
-    mapInstance.fitBounds(polygon.getBounds(), { padding: [16, 16] });
-    // Re-fit after layout settles (tiles can shift container size briefly).
-    setTimeout(() => {
-      mapInstance.invalidateSize();
-      mapInstance.fitBounds(polygon.getBounds(), { padding: [16, 16] });
-    }, 150);
-  }
 
   function selectAmount(amount) {
     if (selectedAmount === amount) {
@@ -91,12 +34,9 @@
     // even though the state is already known server-side.
     const t = setTimeout(() => { geoRevealed = true; }, 1200);
 
-    mountStateMap();
-
     return () => {
       observer.disconnect();
       clearTimeout(t);
-      if (mapInstance) { mapInstance.remove(); mapInstance = null; }
     };
   });
 </script>
@@ -183,21 +123,42 @@
         <!-- RIGHT: Social proof card -->
         <div class="flex-1 max-w-md w-full">
           <div class="rounded-2xl bg-white p-6 shadow-2xl border border-gray-300 relative z-10">
-            <!-- Leaflet map zoomed to the visitor's state. CartoDB Voyager tiles
-                 (free, no API key) give a Google-Maps-like street look with no
-                 UI buttons (no satellite toggle, no "open in maps"). Falls back
-                 to the inlined SVG map when we can't pinpoint a US state. -->
+            <!-- Google Maps embed centered on visitor's state. We can't remove
+                 Google's chrome (satellite toggle, "open in maps", attribution)
+                 via the embed URL, so we cover those corners with opaque white
+                 strips and disable pointer events on the iframe so the map is
+                 purely decorative. -->
             <div class="mb-5">
-              <div class="relative rounded-xl overflow-hidden border border-indigo-100 shadow-sm bg-indigo-50" style="aspect-ratio: 16 / 11;">
-                {#if data.stateFeature}
-                  <div bind:this={mapEl} class="absolute inset-0 w-full h-full"></div>
-                  <div class="pointer-events-none absolute top-2 right-2 rounded-full bg-white/95 backdrop-blur px-2.5 py-0.5 text-[11px] font-bold text-indigo-700 shadow border border-indigo-200">
+              <div class="relative rounded-xl overflow-hidden border border-indigo-100 shadow-sm bg-white" style="aspect-ratio: 16 / 11;">
+                {#if data.state}
+                  <iframe
+                    title="Map of {data.state}"
+                    src="https://www.google.com/maps?q={encodeURIComponent(data.state + ' State, USA')}&t=&z=6&ie=UTF8&iwloc=&output=embed"
+                    class="absolute inset-0 w-full h-full border-0 pointer-events-none"
+                    loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade"
+                  ></iframe>
+                  <!-- Cover Google's UI: top-left strip hides Map/Satellite toggle,
+                       top-right corner hides "View larger map" link, bottom strip
+                       hides "Map data ©…/Terms" attribution. -->
+                  <div class="pointer-events-none absolute top-0 left-0 h-10 w-32 bg-white"></div>
+                  <div class="pointer-events-none absolute top-0 right-0 h-10 w-40 bg-white"></div>
+                  <div class="pointer-events-none absolute bottom-0 left-0 right-0 h-5 bg-white"></div>
+                  <!-- State badge sits on top of the right cover strip. -->
+                  <div class="pointer-events-none absolute top-2 right-2 rounded-full bg-white px-2.5 py-0.5 text-[11px] font-bold text-indigo-700 shadow border border-indigo-200">
                     {data.stateCode}
                   </div>
                 {:else}
-                  <div class="us-map absolute inset-0 w-full h-full flex items-center justify-center p-2">
-                    {@html data.mapSvg}
-                  </div>
+                  <iframe
+                    title="Map of United States"
+                    src="https://www.google.com/maps?q=United+States&t=&z=4&ie=UTF8&iwloc=&output=embed"
+                    class="absolute inset-0 w-full h-full border-0 pointer-events-none"
+                    loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade"
+                  ></iframe>
+                  <div class="pointer-events-none absolute top-0 left-0 h-10 w-32 bg-white"></div>
+                  <div class="pointer-events-none absolute top-0 right-0 h-10 w-40 bg-white"></div>
+                  <div class="pointer-events-none absolute bottom-0 left-0 right-0 h-5 bg-white"></div>
                 {/if}
               </div>
               <p class="mt-3 text-center text-sm font-semibold text-gray-700">
