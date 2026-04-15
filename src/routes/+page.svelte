@@ -175,14 +175,14 @@
 
           <!-- MICRO-FORM -->
           <div class="mb-4 rounded-2xl bg-white p-5 shadow-2xl border border-gray-300 relative z-10" id="loan-form">
-            <p class="mb-3 text-base font-semibold text-gray-800">How much do you need?</p>
-            <div class="grid grid-cols-2 gap-3 sm:grid-cols-4">
+            <p class="mb-2 text-base font-semibold text-gray-800">How much do you need?</p>
+            <div class="flex gap-2">
               {#each [10000, 20000, 30000, 40000] as amount}
                 <button
-                  class="amount-btn rounded-xl border-2 px-4 py-3 text-center font-bold text-lg {selectedAmount === amount ? 'selected border-indigo-600 bg-indigo-600 text-white' : 'border-indigo-200 bg-indigo-50 text-indigo-700'}"
+                  class="amount-btn flex-1 rounded-lg border-2 py-2 text-center font-bold text-sm {selectedAmount === amount ? 'selected border-indigo-600 bg-indigo-600 text-white' : 'border-indigo-200 bg-indigo-50 text-indigo-700'}"
                   onclick={() => selectAmount(amount)}
                 >
-                  ${amount.toLocaleString()}
+                  ${(amount / 1000).toFixed(0)}k
                 </button>
               {/each}
             </div>
