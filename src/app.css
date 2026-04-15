@@ -1,0 +1,154 @@
+@import "tailwindcss";
+
+html, body {
+  font-family: 'Inter', sans-serif;
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
+.amount-btn {
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+.amount-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+}
+.amount-btn.selected {
+  background: #4f46e5 !important;
+  color: white !important;
+  border-color: #4f46e5 !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(79, 70, 229, 0.4);
+}
+
+.pulse-dot {
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.15; transform: scale(0.8); }
+}
+
+.ticker-scroll {
+  animation: tickerScroll 20s linear infinite;
+}
+@keyframes tickerScroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.sticky-cta {
+  transform: translateY(100%);
+  transition: transform 0.3s ease;
+}
+.sticky-cta.visible {
+  transform: translateY(0);
+}
+
+.cta-pulse {
+  animation: ctaPulse 2.5s ease-in-out infinite;
+}
+@keyframes ctaPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(79, 70, 229, 0.4); }
+  50% { box-shadow: 0 0 0 12px rgba(79, 70, 229, 0); }
+}
+
+.glisten-text {
+  display: inline-block;
+  color: #4f46e5;
+  background: linear-gradient(90deg, #4f46e5 0%, #4f46e5 40%, #818cf8 50%, #4f46e5 60%, #4f46e5 100%);
+  background-size: 200% 100%;
+  background-position: 100% 0;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: glisten 3.5s ease-in-out infinite;
+  animation-delay: 1.5s;
+}
+@keyframes glisten {
+  0% { background-position: 100% 0; }
+  40% { background-position: -100% 0; }
+  100% { background-position: -100% 0; }
+}
+
+.main-cta {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  margin-top: 0;
+  transition: max-height 0.4s ease, opacity 0.3s ease, padding 0.4s ease, margin 0.4s ease;
+}
+.main-cta.show {
+  max-height: 80px;
+  opacity: 1;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  margin-top: 1.25rem;
+}
+
+/* Geo pill: scanning -> revealed */
+.geo-pill {
+  transition: background-color 0.5s ease, border-color 0.5s ease, color 0.5s ease, box-shadow 0.5s ease;
+}
+.geo-pill.revealed {
+  background-color: #ecfdf5;
+  border-color: #a7f3d0;
+  color: #047857;
+  animation: geoFlash 0.8s ease;
+}
+@keyframes geoFlash {
+  0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.6); transform: scale(1); }
+  40% { box-shadow: 0 0 0 12px rgba(16, 185, 129, 0); transform: scale(1.04); }
+  100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); transform: scale(1); }
+}
+
+.radar-dot {
+  position: relative;
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 9999px;
+  background: #4f46e5;
+  flex-shrink: 0;
+}
+.radar-dot::before,
+.radar-dot::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  border: 2px solid #4f46e5;
+  animation: radarPing 1.6s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+.radar-dot::after { animation-delay: 0.8s; }
+@keyframes radarPing {
+  0% { transform: scale(1); opacity: 0.8; }
+  100% { transform: scale(3); opacity: 0; }
+}
+.geo-pill.revealed .radar-dot { background: #10b981; }
+.geo-pill.revealed .radar-dot::before,
+.geo-pill.revealed .radar-dot::after { display: none; }
+
+.scanning-dots::after {
+  display: inline-block;
+  content: '';
+  animation: scanningDots 1.4s steps(4, end) infinite;
+}
+@keyframes scanningDots {
+  0% { content: ''; }
+  25% { content: '.'; }
+  50% { content: '..'; }
+  75% { content: '...'; }
+  100% { content: ''; }
+}
+
+.geo-state-text {
+  animation: geoStateIn 0.5s ease;
+}
+@keyframes geoStateIn {
+  0% { opacity: 0; transform: translateY(4px); }
+  100% { opacity: 1; transform: translateY(0); }
+}

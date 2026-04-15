@@ -1,0 +1,312 @@
+<script>
+  import { onMount } from 'svelte';
+
+  let { data } = $props();
+
+  let selectedAmount = $state(null);
+  let showCta = $state(false);
+  let showSticky = $state(false);
+  let headlineEl;
+  let urgencyCount = $state(Math.floor(Math.random() * 30) + 25);
+  let geoRevealed = $state(false);
+
+  const CTA_URL = 'https://t.emergencycashpro.com/lc';
+
+  function selectAmount(amount) {
+    if (selectedAmount === amount) {
+      window.location.href = CTA_URL;
+      return;
+    }
+    selectedAmount = amount;
+    showCta = true;
+  }
+
+  onMount(() => {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        showSticky = !entry.isIntersecting;
+      });
+    }, { threshold: 0 });
+
+    if (headlineEl) observer.observe(headlineEl);
+
+    // Hold the scanning animation for ~1.2s so the reveal feels intentional,
+    // even though the state is already known server-side.
+    const t = setTimeout(() => { geoRevealed = true; }, 1200);
+
+    return () => {
+      observer.disconnect();
+      clearTimeout(t);
+    };
+  });
+</script>
+
+<svelte:head>
+  <title>Secure Your Personal Loan - Up to $40,000</title>
+</svelte:head>
+
+<div class="bg-white text-gray-900 overflow-x-hidden max-w-[100vw]">
+
+  <!-- HERO SECTION -->
+  <section class="relative overflow-hidden bg-gradient-to-br from-indigo-100 via-purple-100 to-blue-100 min-h-screen md:min-h-0">
+    <div class="absolute left-0 top-0 h-[500px] w-[500px] rounded-full bg-gradient-to-br from-blue-300/20 to-indigo-400/20 blur-3xl pointer-events-none" aria-hidden="true"></div>
+    <div class="absolute right-0 top-20 h-96 w-96 rounded-full bg-gradient-to-br from-purple-300/20 to-pink-300/20 blur-3xl pointer-events-none" aria-hidden="true"></div>
+
+    <div class="relative mx-auto max-w-7xl px-4 py-10 md:py-20">
+      <div class="flex flex-col items-center gap-8 lg:flex-row lg:gap-16">
+
+        <!-- LEFT: Copy + Form -->
+        <div class="flex-1 text-center lg:text-left">
+          <div class="mb-4 inline-flex items-center gap-2 rounded-full border border-green-200 bg-green-50 px-4 py-1.5 text-sm font-medium text-green-700">
+            <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd"/></svg>
+            Trusted by 100,000+ Americans
+          </div>
+
+          <h1 bind:this={headlineEl} class="mb-4 text-4xl font-black leading-tight tracking-tight text-gray-900 md:text-5xl lg:text-6xl">
+            Secure Up To<br class="md:hidden"><span class="hidden md:inline"> </span><span class="text-indigo-600 glisten-text">$40,000</span>
+          </h1>
+
+          <p class="mb-6 text-lg text-gray-600 md:text-xl">
+            Banks can't deny you from applying.<br>Get approved in minutes.
+          </p>
+
+          <div class="geo-pill {geoRevealed ? 'revealed' : ''} mb-3 inline-flex items-center gap-2.5 rounded-lg bg-indigo-50 border border-indigo-300 px-4 py-2 text-sm font-medium text-indigo-700">
+            <span class="radar-dot"></span>
+            {#if !geoRevealed}
+              <span class="geo-scanning-text">Checking availability<span class="scanning-dots"></span></span>
+            {:else if data.state}
+              <span class="geo-state-text">Now available in <strong>{data.state}</strong></span>
+            {:else}
+              <span class="geo-state-text">Available nationwide</span>
+            {/if}
+          </div>
+
+          <div class="mb-6 inline-flex items-center gap-2 rounded-lg bg-orange-50 border border-orange-300 px-4 py-2 text-sm font-medium text-orange-700">
+            <span class="pulse-dot inline-block h-2 w-2 rounded-full bg-orange-500"></span>
+            <span>
+              {#if data.state}
+                <strong>{urgencyCount} people in {data.state}</strong> checking their amount right now
+              {:else}
+                <strong>{urgencyCount} people</strong> checking their amount right now
+              {/if}
+            </span>
+          </div>
+
+          <!-- MICRO-FORM -->
+          <div class="mb-6 rounded-2xl bg-white p-6 shadow-2xl border border-gray-300 relative z-10" id="loan-form">
+            <p class="mb-4 text-base font-semibold text-gray-800">How much do you need?</p>
+            <div class="grid grid-cols-2 gap-3 sm:grid-cols-4">
+              {#each [10000, 20000, 30000, 40000] as amount}
+                <button
+                  class="amount-btn rounded-xl border-2 px-4 py-3 text-center font-bold text-lg {selectedAmount === amount ? 'selected border-indigo-600 bg-indigo-600 text-white' : 'border-indigo-200 bg-indigo-50 text-indigo-700'}"
+                  onclick={() => selectAmount(amount)}
+                >
+                  ${amount.toLocaleString()}
+                </button>
+              {/each}
+            </div>
+
+            <a href={CTA_URL} class="main-cta cta-pulse block w-full rounded-xl bg-indigo-600 px-8 text-center text-lg font-bold text-white shadow-lg hover:bg-indigo-700 transition-colors {showCta ? 'show' : ''}">
+              Check If You Qualify <span class="ml-1">&rarr;</span>
+            </a>
+
+            <div class="mt-3 flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-xs text-gray-500">
+              <span class="flex items-center gap-1"><svg class="h-3.5 w-3.5 text-green-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clip-rule="evenodd"/></svg> Low credit approvals</span>
+              <span class="flex items-center gap-1"><svg class="h-3.5 w-3.5 text-green-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clip-rule="evenodd"/></svg> Free to apply</span>
+              <span class="flex items-center gap-1"><svg class="h-3.5 w-3.5 text-green-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clip-rule="evenodd"/></svg> 256-bit encrypted</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT: Social proof card -->
+        <div class="flex-1 max-w-md w-full">
+          <div class="rounded-2xl bg-white p-6 shadow-2xl border border-gray-300 relative z-10">
+            <div class="flex items-center gap-3 mb-5">
+              <div class="flex h-12 w-12 items-center justify-center rounded-full bg-green-100">
+                <svg class="h-6 w-6 text-green-600" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd"/></svg>
+              </div>
+              <div>
+                <p class="text-sm text-gray-500">Application Status</p>
+                <p class="text-lg font-bold text-green-600">Funds Available!</p>
+              </div>
+            </div>
+            <div class="space-y-3">
+              <div class="flex items-center justify-between rounded-xl bg-green-50 px-4 py-3">
+                <span class="text-sm font-medium text-gray-700">Loan Amount</span>
+                <span class="text-lg font-bold text-green-600">Up to $40,000</span>
+              </div>
+              <div class="flex items-center justify-between rounded-xl bg-green-50 px-4 py-3">
+                <span class="text-sm font-medium text-gray-700">Funds Available</span>
+                <span class="text-lg font-bold text-green-600">48 hours</span>
+              </div>
+              <div class="flex items-center justify-between rounded-xl bg-gray-50 px-4 py-3">
+                <span class="text-sm font-medium text-gray-700">Credit Required</span>
+                <span class="text-lg font-bold text-green-600">Low credit OK</span>
+              </div>
+            </div>
+            <div class="mt-5 rounded-xl bg-gray-50 border border-gray-200 p-4">
+              <div class="flex items-start gap-3">
+                <div class="flex-shrink-0 h-10 w-10 rounded-full bg-indigo-100 flex items-center justify-center text-sm font-bold text-indigo-600">SM</div>
+                <div>
+                  <div class="flex items-center gap-1 mb-1">
+                    <span class="text-yellow-400 text-sm">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+                  </div>
+                  <p class="text-sm text-gray-700">"Got approved for $15,000 in literally 5 minutes. Couldn't believe it."</p>
+                  <p class="text-xs text-gray-500 mt-1.5 font-medium">Sarah M. &mdash; Texas</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTENT SECTION -->
+  <div class="relative overflow-hidden bg-gradient-to-br from-indigo-100 via-purple-100 to-blue-100">
+    <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-[600px] w-[600px] rounded-full bg-gradient-to-br from-blue-300/30 to-indigo-400/30 blur-3xl pointer-events-none" aria-hidden="true"></div>
+    <div class="absolute left-1/2 top-1/2 -translate-x-1/3 -translate-y-1/3 h-[500px] w-[500px] rounded-full bg-gradient-to-br from-purple-300/25 to-pink-300/25 blur-3xl pointer-events-none" aria-hidden="true"></div>
+
+    <!-- TICKER -->
+    <div class="bg-gray-900 py-3 overflow-hidden">
+      <div class="flex whitespace-nowrap">
+        <div class="ticker-scroll flex gap-8 text-sm text-gray-300">
+          {#each [
+            { name: 'James R.', state: 'FL', amount: '$12,500', time: '2 min ago' },
+            { name: 'Maria L.', state: 'CA', amount: '$30,000', time: '5 min ago' },
+            { name: 'David K.', state: 'TX', amount: '$8,000', time: '8 min ago' },
+            { name: 'Linda P.', state: 'OH', amount: '$22,000', time: '11 min ago' },
+            { name: 'Marcus W.', state: 'GA', amount: '$40,000', time: '14 min ago' },
+            { name: 'Amy T.', state: 'AZ', amount: '$18,500', time: '17 min ago' },
+          ] as item}
+            <span class="flex items-center gap-2"><span class="h-2 w-2 rounded-full bg-green-400"></span> {item.name} ({item.state}) approved for {item.amount} &mdash; {item.time}</span>
+          {/each}
+          {#each [
+            { name: 'James R.', state: 'FL', amount: '$12,500', time: '2 min ago' },
+            { name: 'Maria L.', state: 'CA', amount: '$30,000', time: '5 min ago' },
+            { name: 'David K.', state: 'TX', amount: '$8,000', time: '8 min ago' },
+            { name: 'Linda P.', state: 'OH', amount: '$22,000', time: '11 min ago' },
+            { name: 'Marcus W.', state: 'GA', amount: '$40,000', time: '14 min ago' },
+            { name: 'Amy T.', state: 'AZ', amount: '$18,500', time: '17 min ago' },
+          ] as item}
+            <span class="flex items-center gap-2"><span class="h-2 w-2 rounded-full bg-green-400"></span> {item.name} ({item.state}) approved for {item.amount} &mdash; {item.time}</span>
+          {/each}
+        </div>
+      </div>
+    </div>
+
+    <!-- STATS BAR -->
+    <div class="relative py-10 md:py-18">
+      <div class="mx-auto max-w-7xl px-4">
+        <div class="flex justify-center gap-6 md:justify-around md:max-w-5xl md:mx-auto">
+          <div class="text-center">
+            <p class="text-lg sm:text-2xl md:text-4xl font-black text-indigo-600 leading-tight">Low Credit</p>
+            <p class="mt-0.5 text-xs sm:text-sm md:text-base font-medium text-gray-600">Scores Approved</p>
+          </div>
+          <div class="text-center">
+            <p class="text-lg sm:text-2xl md:text-4xl font-black text-indigo-600 leading-tight">5 Min</p>
+            <p class="mt-0.5 text-xs sm:text-sm md:text-base font-medium text-gray-600">Fast Approval</p>
+          </div>
+          <div class="text-center">
+            <p class="text-lg sm:text-2xl md:text-4xl font-black text-indigo-600 leading-tight">48 Hrs</p>
+            <p class="mt-0.5 text-xs sm:text-sm md:text-base font-medium text-gray-600">Funds Available</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TESTIMONIALS -->
+    <div class="relative pb-14 md:pb-20">
+      <div class="mx-auto max-w-7xl px-8 md:px-4">
+        <h2 class="mb-8 text-center text-2xl font-bold text-gray-900 md:text-3xl">Real People. Real Approvals.</h2>
+        <div class="grid gap-5 md:grid-cols-3 max-w-xs mx-auto md:max-w-none">
+          <div class="rounded-2xl bg-white p-5 shadow-xl border border-gray-200">
+            <div class="flex items-center gap-1 mb-2 text-yellow-400 text-sm">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+            <p class="text-gray-700 mb-4 text-sm">"I was drowning in credit card debt and my score was 580. Got matched with a lender in 5 minutes and had $20,000 deposited in 2 days."</p>
+            <div class="flex items-center gap-3 border-t border-gray-100 pt-3">
+              <div class="h-9 w-9 rounded-full bg-blue-100 flex items-center justify-center text-xs font-bold text-blue-600">JR</div>
+              <div>
+                <p class="font-semibold text-gray-900 text-sm">James R.</p>
+                <p class="text-xs text-gray-500">Florida &mdash; Approved $20,000</p>
+              </div>
+            </div>
+          </div>
+          <div class="rounded-2xl bg-white p-5 shadow-xl border border-gray-200">
+            <div class="flex items-center gap-1 mb-2 text-yellow-400 text-sm">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+            <p class="text-gray-700 mb-4 text-sm">"I thought I'd get denied because I'm behind on my car payment. Checked my amount anyway and got approved for $12,000. Total game changer."</p>
+            <div class="flex items-center gap-3 border-t border-gray-100 pt-3">
+              <div class="h-9 w-9 rounded-full bg-purple-100 flex items-center justify-center text-xs font-bold text-purple-600">LP</div>
+              <div>
+                <p class="font-semibold text-gray-900 text-sm">Linda P.</p>
+                <p class="text-xs text-gray-500">Ohio &mdash; Approved $12,000</p>
+              </div>
+            </div>
+          </div>
+          <div class="rounded-2xl bg-white p-5 shadow-xl border border-gray-200">
+            <div class="flex items-center gap-1 mb-2 text-yellow-400 text-sm">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+            <p class="text-gray-700 mb-4 text-sm">"My bank said no. This site connected me to a lender that said yes in minutes. No hard credit check, no stress. Wish I found this sooner."</p>
+            <div class="flex items-center gap-3 border-t border-gray-100 pt-3">
+              <div class="h-9 w-9 rounded-full bg-green-100 flex items-center justify-center text-xs font-bold text-green-600">MW</div>
+              <div>
+                <p class="font-semibold text-gray-900 text-sm">Marcus W.</p>
+                <p class="text-xs text-gray-500">Georgia &mdash; Approved $35,000</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TRUST BADGES -->
+    <div class="relative pb-12">
+      <div class="mx-auto max-w-md md:max-w-7xl px-4">
+        <div class="grid grid-cols-2 gap-4 md:flex md:flex-wrap md:items-center md:justify-center md:gap-12">
+          <div class="flex items-center justify-center gap-1.5 text-gray-500">
+            <svg class="h-4 w-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 1a4.5 4.5 0 00-4.5 4.5V9H5a2 2 0 00-2 2v6a2 2 0 002 2h10a2 2 0 002-2v-6a2 2 0 00-2-2h-.5V5.5A4.5 4.5 0 0010 1zm3 8V5.5a3 3 0 10-6 0V9h6z" clip-rule="evenodd"/></svg>
+            <span class="text-xs md:text-sm font-medium">SSL Secure</span>
+          </div>
+          <div class="flex items-center justify-center gap-1.5 text-gray-500">
+            <svg class="h-4 w-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 2.5c-1.31 0-2.526.386-3.546 1.051a.75.75 0 01-.908-1.194A8.459 8.459 0 0110 1c1.51 0 2.934.394 4.165 1.083a.75.75 0 11-.739 1.305A6.959 6.959 0 0010 2.5zM10 7a3 3 0 100 6 3 3 0 000-6zm-4.5 3a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0z" clip-rule="evenodd"/></svg>
+            <span class="text-xs md:text-sm font-medium">Privacy Protected</span>
+          </div>
+          <div class="flex items-center justify-center gap-1.5 text-gray-500">
+            <svg class="h-4 w-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M1 4a1 1 0 011-1h16a1 1 0 011 1v8a1 1 0 01-1 1H2a1 1 0 01-1-1V4zm12 4a3 3 0 11-6 0 3 3 0 016 0zM4 9a1 1 0 100-2 1 1 0 000 2zm12-1a1 1 0 11-2 0 1 1 0 012 0z" clip-rule="evenodd"/></svg>
+            <span class="text-xs md:text-sm font-medium">No Hidden Fees</span>
+          </div>
+          <div class="flex items-center justify-center gap-1.5 text-gray-500">
+            <svg class="h-4 w-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clip-rule="evenodd"/></svg>
+            <span class="text-xs md:text-sm font-medium">Low Credit OK</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BOTTOM CTA -->
+  <section class="bg-indigo-600 py-12 md:py-20">
+    <div class="mx-auto max-w-lg md:max-w-3xl px-8 text-center">
+      <h2 class="mb-3 text-2xl font-bold text-white md:text-4xl">Don't let your bank decide your future.</h2>
+      <p class="mb-6 text-sm md:text-lg text-indigo-200">Join thousands already approved.<br class="md:hidden"> Check your amount in minutes.</p>
+      <a href={CTA_URL} class="inline-block rounded-xl bg-white px-8 py-3.5 text-base md:text-lg font-bold text-indigo-600 shadow-lg hover:bg-gray-100 transition-colors">
+        Check If You Qualify &rarr;
+      </a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="bg-gray-900 py-8">
+    <div class="mx-auto max-w-4xl px-4 text-center text-xs text-gray-500 leading-relaxed">
+      <p>This website is not a lender and does not make loans or credit decisions. We connect consumers with independent third-party lenders. Loan terms, rates, and approval are determined by individual lenders based on your application.</p>
+    </div>
+  </footer>
+
+  <!-- STICKY CTA -->
+  <div class="sticky-cta fixed bottom-0 left-0 w-full z-50 bg-white/95 backdrop-blur border-t border-gray-200 py-3 px-4 shadow-2xl {showSticky ? 'visible' : ''}">
+    <div class="flex flex-col items-center">
+      <a href={CTA_URL} class="rounded-xl bg-indigo-600 px-10 py-3.5 text-base font-bold text-white shadow-lg hover:bg-indigo-700 transition-colors">
+        Check If You Qualify &rarr;
+      </a>
+      <p class="mt-1.5 text-xs text-gray-400">Free to apply &bull; Low credit approvals</p>
+    </div>
+  </div>
+</div>
