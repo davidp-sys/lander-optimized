@@ -139,12 +139,12 @@
     <div class="absolute left-0 top-0 h-[500px] w-[500px] rounded-full bg-gradient-to-br from-blue-300/20 to-indigo-400/20 blur-3xl pointer-events-none" aria-hidden="true"></div>
     <div class="absolute right-0 top-20 h-96 w-96 rounded-full bg-gradient-to-br from-purple-300/20 to-pink-300/20 blur-3xl pointer-events-none" aria-hidden="true"></div>
 
-    <div class="relative mx-auto max-w-7xl px-4 py-10 md:py-20">
-      <div class="flex flex-col items-center gap-8 lg:flex-row lg:gap-16">
+    <div class="relative mx-auto max-w-7xl px-4 py-6 md:py-14">
+      <div class="flex flex-col items-center gap-5 lg:flex-row lg:gap-12">
 
         <!-- LEFT: Copy + Form -->
         <div class="flex-1 text-center lg:text-left">
-          <h1 bind:this={headlineEl} class="mb-4 font-black leading-tight tracking-tight text-gray-900 {data.state ? 'state-headline' : 'text-4xl md:text-5xl lg:text-6xl'}">
+          <h1 bind:this={headlineEl} class="mb-2 font-black leading-tight tracking-tight text-gray-900 {data.state ? 'state-headline' : 'text-4xl md:text-5xl lg:text-6xl'}">
             {#if data.state}
               <span class="headline-line"><span class="text-indigo-600">{data.state}</span> residents</span>
               <span class="headline-line">can secure up to <span class="text-indigo-600 glisten-text">$40,000</span></span>
@@ -153,11 +153,11 @@
             {/if}
           </h1>
 
-          <p class="mb-6 text-lg text-gray-600 md:text-xl">
+          <p class="mb-4 text-lg text-gray-600 md:text-xl">
             Banks can't deny you from applying.<br>Get approved in minutes.
           </p>
 
-          <div class="geo-pill {geoRevealed ? 'revealed' : ''} mb-3 inline-flex items-center gap-2.5 rounded-lg bg-indigo-50 border border-indigo-300 px-4 py-2 text-sm font-medium text-indigo-700">
+          <div class="geo-pill {geoRevealed ? 'revealed' : ''} mb-2 inline-flex items-center gap-2.5 rounded-lg bg-indigo-50 border border-indigo-300 px-4 py-1.5 text-sm font-medium text-indigo-700">
             <span class="radar-dot"></span>
             {#if !geoRevealed}
               <span class="geo-scanning-text">Checking availability<span class="scanning-dots"></span></span>
@@ -168,14 +168,14 @@
             {/if}
           </div>
 
-          <div class="mb-6 inline-flex items-center gap-2 rounded-lg bg-orange-50 border border-orange-300 px-4 py-2 text-sm font-medium text-orange-700">
+          <div class="mb-4 inline-flex items-center gap-2 rounded-lg bg-orange-50 border border-orange-300 px-4 py-1.5 text-sm font-medium text-orange-700">
             <span class="pulse-dot inline-block h-2 w-2 rounded-full bg-orange-500"></span>
             <span><strong>{urgencyCount} people</strong> checking their amount right now</span>
           </div>
 
           <!-- MICRO-FORM -->
-          <div class="mb-6 rounded-2xl bg-white p-6 shadow-2xl border border-gray-300 relative z-10" id="loan-form">
-            <p class="mb-4 text-base font-semibold text-gray-800">How much do you need?</p>
+          <div class="mb-4 rounded-2xl bg-white p-5 shadow-2xl border border-gray-300 relative z-10" id="loan-form">
+            <p class="mb-3 text-base font-semibold text-gray-800">How much do you need?</p>
             <div class="grid grid-cols-2 gap-3 sm:grid-cols-4">
               {#each [10000, 20000, 30000, 40000] as amount}
                 <button
@@ -201,9 +201,9 @@
 
         <!-- RIGHT: Social proof card -->
         <div class="flex-1 max-w-md w-full">
-          <div class="rounded-2xl bg-white p-6 shadow-2xl border border-gray-300 relative z-10">
+          <div class="rounded-2xl bg-white p-5 shadow-2xl border border-gray-300 relative z-10">
             <!-- Google Maps embed centered on visitor's state -->
-            <div class="mb-5">
+            <div class="mb-4">
               <div class="relative rounded-xl overflow-hidden border border-indigo-100 shadow-sm" style="aspect-ratio: 16 / 11;">
                 {#if data.state}
                   <iframe
@@ -226,7 +226,7 @@
                   ></iframe>
                 {/if}
               </div>
-              <p class="mt-3 text-center text-sm font-semibold text-gray-700">
+              <p class="mt-2 text-center text-sm font-semibold text-gray-700">
                 {#if data.state}
                   <span class="text-indigo-600">{data.state}</span> residents qualify for up to <span class="text-indigo-600">$40,000</span>
                 {:else}
@@ -234,21 +234,21 @@
                 {/if}
               </p>
             </div>
-            <div class="space-y-3">
-              <div class="flex items-center justify-between rounded-xl bg-green-50 px-4 py-3">
+            <div class="space-y-2">
+              <div class="flex items-center justify-between rounded-xl bg-green-50 px-4 py-2.5">
                 <span class="text-sm font-medium text-gray-700">Loan Amount</span>
                 <span class="text-lg font-bold text-green-600">Up to $40,000</span>
               </div>
-              <div class="flex items-center justify-between rounded-xl bg-green-50 px-4 py-3">
+              <div class="flex items-center justify-between rounded-xl bg-green-50 px-4 py-2.5">
                 <span class="text-sm font-medium text-gray-700">Funds Available</span>
                 <span class="text-lg font-bold text-green-600">48 hours</span>
               </div>
-              <div class="flex items-center justify-between rounded-xl bg-gray-50 px-4 py-3">
+              <div class="flex items-center justify-between rounded-xl bg-gray-50 px-4 py-2.5">
                 <span class="text-sm font-medium text-gray-700">Credit Required</span>
                 <span class="text-lg font-bold text-green-600">Low credit OK</span>
               </div>
             </div>
-            <div class="mt-5 rounded-xl bg-gray-50 border border-gray-200 p-4 lg:hidden">
+            <div class="mt-3 rounded-xl bg-gray-50 border border-gray-200 p-3 lg:hidden">
               <div class="flex items-start gap-3">
                 <div class="flex-shrink-0 h-10 w-10 rounded-full bg-indigo-100 flex items-center justify-center text-sm font-bold text-indigo-600">SM</div>
                 <div>
