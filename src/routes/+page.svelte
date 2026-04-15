@@ -123,14 +123,28 @@
         <!-- RIGHT: Social proof card -->
         <div class="flex-1 max-w-md w-full">
           <div class="rounded-2xl bg-white p-6 shadow-2xl border border-gray-300 relative z-10">
-            <!-- US Map with highlighted state -->
+            <!-- Google Maps embed centered on visitor's state -->
             <div class="mb-5">
-              <div class="us-map relative rounded-xl bg-gradient-to-br from-indigo-50 to-purple-50 px-3 py-2 border border-indigo-100 overflow-hidden">
-                {@html data.mapSvg}
-                {#if data.stateCode}
-                  <div class="absolute top-2 right-2 rounded-full bg-white/95 backdrop-blur px-2.5 py-0.5 text-[11px] font-bold text-indigo-700 shadow-sm border border-indigo-200">
+              <div class="relative rounded-xl overflow-hidden border border-indigo-100 shadow-sm" style="aspect-ratio: 16 / 11;">
+                {#if data.state}
+                  <iframe
+                    title="Map of {data.state}"
+                    src="https://www.google.com/maps?q={encodeURIComponent(data.state + ' State, USA')}&t=&z=6&ie=UTF8&iwloc=&output=embed"
+                    class="absolute inset-0 w-full h-full border-0"
+                    loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade"
+                  ></iframe>
+                  <div class="pointer-events-none absolute top-2 right-2 rounded-full bg-white/95 backdrop-blur px-2.5 py-0.5 text-[11px] font-bold text-indigo-700 shadow border border-indigo-200">
                     {data.stateCode}
                   </div>
+                {:else}
+                  <iframe
+                    title="Map of United States"
+                    src="https://www.google.com/maps?q=United+States&t=&z=4&ie=UTF8&iwloc=&output=embed"
+                    class="absolute inset-0 w-full h-full border-0"
+                    loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade"
+                  ></iframe>
                 {/if}
               </div>
               <p class="mt-3 text-center text-sm font-semibold text-gray-700">
