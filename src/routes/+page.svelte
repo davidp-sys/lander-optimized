@@ -271,21 +271,23 @@
     <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-[600px] w-[600px] rounded-full bg-gradient-to-br from-blue-300/30 to-indigo-400/30 blur-3xl pointer-events-none" aria-hidden="true"></div>
     <div class="absolute left-1/2 top-1/2 -translate-x-1/3 -translate-y-1/3 h-[500px] w-[500px] rounded-full bg-gradient-to-br from-purple-300/25 to-pink-300/25 blur-3xl pointer-events-none" aria-hidden="true"></div>
 
-    <!-- STATS BAR -->
-    <div class="relative py-10 md:py-18">
-      <div class="mx-auto max-w-7xl px-4">
-        <div class="flex justify-center gap-6 md:justify-around md:max-w-5xl md:mx-auto">
+    <!-- STATS BAND -->
+    <div class="relative bg-indigo-600 py-5 md:py-6">
+      <div class="mx-auto max-w-5xl px-4">
+        <div class="flex justify-around items-center">
           <div class="text-center">
-            <p class="text-lg sm:text-2xl md:text-4xl font-black text-indigo-600 leading-tight">Low Credit</p>
-            <p class="mt-0.5 text-xs sm:text-sm md:text-base font-medium text-gray-600">Scores Approved</p>
+            <p class="text-lg sm:text-2xl md:text-4xl font-black text-white leading-tight">Low Credit</p>
+            <p class="mt-0.5 text-xs sm:text-sm md:text-base font-medium text-indigo-200">Scores Approved</p>
           </div>
+          <div class="hidden sm:block w-px h-10 bg-indigo-400/50"></div>
           <div class="text-center">
-            <p class="text-lg sm:text-2xl md:text-4xl font-black text-indigo-600 leading-tight">5 Min</p>
-            <p class="mt-0.5 text-xs sm:text-sm md:text-base font-medium text-gray-600">Fast Approval</p>
+            <p class="text-lg sm:text-2xl md:text-4xl font-black text-white leading-tight">5 Min</p>
+            <p class="mt-0.5 text-xs sm:text-sm md:text-base font-medium text-indigo-200">Fast Approval</p>
           </div>
+          <div class="hidden sm:block w-px h-10 bg-indigo-400/50"></div>
           <div class="text-center">
-            <p class="text-lg sm:text-2xl md:text-4xl font-black text-indigo-600 leading-tight">48 Hrs</p>
-            <p class="mt-0.5 text-xs sm:text-sm md:text-base font-medium text-gray-600">Funds Available</p>
+            <p class="text-lg sm:text-2xl md:text-4xl font-black text-white leading-tight">48 Hrs</p>
+            <p class="mt-0.5 text-xs sm:text-sm md:text-base font-medium text-indigo-200">Funds Available</p>
           </div>
         </div>
       </div>
