@@ -66,9 +66,9 @@
             Trusted by 100,000+ Americans
           </div>
 
-          <h1 bind:this={headlineEl} class="mb-4 text-4xl font-black leading-tight tracking-tight text-gray-900 md:text-5xl lg:text-6xl">
+          <h1 bind:this={headlineEl} class="mb-4 font-black leading-tight tracking-tight text-gray-900 {data.state ? 'text-3xl md:text-4xl lg:text-5xl' : 'text-4xl md:text-5xl lg:text-6xl'}">
             {#if data.state}
-              <span class="text-indigo-600">{data.state}</span> residents can secure up to <span class="text-indigo-600 glisten-text">$40,000</span>
+              <span class="text-indigo-600">{data.state}</span> residents can<br>secure up to <span class="text-indigo-600 glisten-text">$40,000</span>
             {:else}
               Secure Up To<br class="md:hidden"><span class="hidden md:inline"> </span><span class="text-indigo-600 glisten-text">$40,000</span>
             {/if}
@@ -131,11 +131,10 @@
           <div class="rounded-2xl bg-white p-6 shadow-2xl border border-gray-300 relative z-10">
             <!-- US Map with highlighted state -->
             <div class="mb-5">
-              <div class="us-map relative rounded-xl bg-gradient-to-br from-indigo-50 to-purple-50 p-3 border border-indigo-100">
+              <div class="us-map relative rounded-xl bg-gradient-to-br from-indigo-50 to-purple-50 px-3 py-2 border border-indigo-100 overflow-hidden">
                 {@html data.mapSvg}
                 {#if data.stateCode}
-                  <div class="absolute top-3 right-3 inline-flex items-center gap-1.5 rounded-full bg-white/95 backdrop-blur px-3 py-1 text-xs font-bold text-indigo-700 shadow-sm border border-indigo-200">
-                    <svg class="h-3 w-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/></svg>
+                  <div class="absolute top-2 right-2 rounded-full bg-white/95 backdrop-blur px-2.5 py-0.5 text-[11px] font-bold text-indigo-700 shadow-sm border border-indigo-200">
                     {data.stateCode}
                   </div>
                 {/if}

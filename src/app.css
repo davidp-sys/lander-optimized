@@ -153,35 +153,48 @@ html, body {
   100% { opacity: 1; transform: translateY(0); }
 }
 
-/* US map container — make the inlined SVG responsive */
+/* US map container — make the inlined SVG responsive and cap its size */
+.us-map {
+  max-width: 100%;
+}
 .us-map svg {
   width: 100%;
   height: auto;
+  max-height: 220px;
   display: block;
 }
-/* Override Wikimedia's hardcoded default state fill so it matches our palette */
-.us-map svg .state,
-.us-map svg path:not([fill]),
-.us-map svg g:not([fill]) {
+/* Default state fill */
+.us-map svg .state {
   fill: #e0e7ff;
 }
-/* Borders between states */
-.us-map svg [class*="-"] {
+/* Each individual state path inherits .state, but make sure paths
+   without explicit fill use our palette */
+.us-map svg g.state > path:not([fill]) {
+  fill: #e0e7ff;
+}
+/* Borders between states (class names like "al-fl") */
+.us-map svg path[class*="-"] {
   stroke: #c7d2fe;
   stroke-width: 0.5;
   fill: none;
 }
-/* Outer border */
+/* Outer border group */
 .us-map svg .borders {
-  stroke: #818cf8;
+  stroke: #a5b4fc;
+  stroke-width: 1;
   fill: none;
 }
-/* Subtle pulse on the highlighted state */
-.us-map svg [fill="#4f46e5"] {
+/* Hide DC indicator and Alaska/Hawaii separators which look weird at small size */
+.us-map svg .dccircle,
+.us-map svg .separator1 {
+  display: none;
+}
+/* Subtle glow on the highlighted state */
+.us-map svg path[fill="#4f46e5"] {
+  filter: drop-shadow(0 0 4px rgba(79, 70, 229, 0.6));
   animation: stateHighlight 2.4s ease-in-out infinite;
-  transform-origin: center;
 }
 @keyframes stateHighlight {
-  0%, 100% { filter: drop-shadow(0 0 0 rgba(79, 70, 229, 0)); }
-  50% { filter: drop-shadow(0 0 6px rgba(79, 70, 229, 0.7)); }
+  0%, 100% { filter: drop-shadow(0 0 2px rgba(79, 70, 229, 0.4)); }
+  50% { filter: drop-shadow(0 0 8px rgba(79, 70, 229, 0.9)); }
 }

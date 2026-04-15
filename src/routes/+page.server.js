@@ -9,6 +9,21 @@ export const prerender = false;
 const HIGHLIGHT_FILL = '#4f46e5';
 const HIGHLIGHT_STROKE = '#312e81';
 
+function normalizeSvg(svg) {
+  // Wikimedia ships the SVG with width/height but no viewBox, so it can't scale
+  // responsively. Force a viewBox and strip the fixed dimensions.
+  let out = svg;
+  if (!/viewBox=/.test(out)) {
+    out = out.replace(/<svg([^>]*)>/, (m, attrs) => {
+      const w = (attrs.match(/\bwidth="(\d+)"/) || [])[1] || '959';
+      const h = (attrs.match(/\bheight="(\d+)"/) || [])[1] || '593';
+      const stripped = attrs.replace(/\b(width|height)="[^"]*"/g, '');
+      return `<svg${stripped} viewBox="0 0 ${w} ${h}" preserveAspectRatio="xMidYMid meet">`;
+    });
+  }
+  return out;
+}
+
 function injectStateHighlight(svg, stateCode) {
   if (!stateCode) return svg;
   const code = stateCode.toLowerCase();
@@ -95,7 +110,7 @@ export async function load({ request, getClientAddress, fetch, url }) {
     stateCode = null;
   }
 
-  const mapSvg = injectStateHighlight(mapSvgRaw, stateCode);
+  const mapSvg = injectStateHighlight(normalizeSvg(mapSvgRaw), stateCode);
 
   console.log(`[geo] ip=${ip} state=${state} code=${stateCode} country=${country} src=${lookupSource} err=${lookupError || 'none'}`);
 
