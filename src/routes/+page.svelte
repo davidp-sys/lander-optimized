@@ -100,7 +100,7 @@
   <title>Secure Your Personal Loan - Up to $40,000</title>
 </svelte:head>
 
-<div class="bg-white text-gray-900 overflow-x-hidden max-w-[100vw] pb-32 md:pb-36">
+<div class="bg-white text-gray-900 overflow-x-hidden max-w-[100vw]">
 
   {#if data.debug}
     <pre class="fixed top-2 right-2 z-[9999] max-w-lg max-h-[80vh] overflow-auto bg-black/90 text-green-300 text-xs p-3 rounded shadow-2xl whitespace-pre-wrap break-words">{JSON.stringify(data.debug, null, 2)}</pre>
@@ -361,7 +361,7 @@
   </section>
 
   <!-- FOOTER -->
-  <footer class="bg-gray-900 py-10 md:py-12">
+  <footer class="bg-gray-900 pt-10 md:pt-12 pb-40 md:pb-44">
     <div class="mx-auto max-w-4xl px-4 text-center text-xs text-gray-500 leading-relaxed">
       <p>This website is not a lender and does not make loans or credit decisions. We connect consumers with independent third-party lenders. Loan terms, rates, and approval are determined by individual lenders based on your application.</p>
     </div>
