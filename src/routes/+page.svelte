@@ -432,7 +432,7 @@
   <!-- APPROVAL POPUP (bottom-left, above sticky CTA) -->
   {#if popup}
     <div
-      class="approval-popup fixed left-3 z-[55] w-[calc(100%-1.5rem)] sm:w-72 rounded-xl bg-white shadow-2xl border border-gray-200 p-3 flex items-center gap-3 {popupVisible ? 'show' : ''}"
+      class="approval-popup fixed z-[60] rounded-xl bg-white shadow-2xl border border-gray-200 p-3 flex items-center gap-3 {popupVisible ? 'show' : ''}"
       role="status"
       aria-live="polite"
     >

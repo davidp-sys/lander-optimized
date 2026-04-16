@@ -19,22 +19,34 @@ html, body {
   white-space: nowrap;
 }
 
-/* Approval popup toast — sits above the fixed bottom CTA bar. Slides in
-   from the left with a soft fade. Bottom offset matches the sticky CTA
-   height (~100px) so they don't overlap. */
+/* Approval popup toast.
+   - Mobile: full-width bar sitting above the sticky CTA with a margin
+     buffer all around — reads like a banner.
+   - Desktop (sm+): compact card anchored to the bottom-left corner of the
+     viewport. Positioned to overlap the empty left side of the sticky CTA
+     bar (CTA button is center-aligned, so the left of the bar is empty). */
 .approval-popup {
-  bottom: 108px;
+  bottom: 128px;          /* above sticky CTA with ~20px buffer on mobile */
+  left: 0.75rem;
+  right: 0.75rem;
   opacity: 0;
-  transform: translateX(-24px);
+  transform: translateY(8px);
   transition: opacity 0.35s ease, transform 0.35s ease;
   pointer-events: none;
 }
 .approval-popup.show {
   opacity: 1;
-  transform: translateX(0);
+  transform: translateY(0);
 }
 @media (min-width: 640px) {
-  .approval-popup { bottom: 110px; left: 1.25rem; }
+  .approval-popup {
+    bottom: 1rem;         /* true bottom-left corner on desktop */
+    left: 1rem;
+    right: auto;
+    width: 20rem;
+    transform: translateX(-16px);
+  }
+  .approval-popup.show { transform: translateX(0); }
 }
 
 
