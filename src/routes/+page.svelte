@@ -361,7 +361,7 @@
   </section>
 
   <!-- FOOTER -->
-  <footer class="bg-gray-900 pt-10 md:pt-12 pb-40 md:pb-44">
+  <footer class="bg-gray-900 pt-5 md:pt-6 pb-28 md:pb-32">
     <div class="mx-auto max-w-4xl px-4 text-center text-xs text-gray-500 leading-relaxed">
       <p>This website is not a lender and does not make loans or credit decisions. We connect consumers with independent third-party lenders. Loan terms, rates, and approval are determined by individual lenders based on your application.</p>
     </div>
