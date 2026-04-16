@@ -10,7 +10,49 @@
   let urgencyCount = $state(Math.floor(Math.random() * 30) + 25);
   let geoRevealed = $state(false);
 
+  // Approval popup (bottom-left toast). Rotates through POPUP_NAMES with a
+  // weighted random city from POPUP_CITIES. Amount is random $12k-$40k
+  // rounded to $500.
+  let popup = $state(null); // { name, city, amount, timeAgo }
+  let popupVisible = $state(false);
+
   const CTA_URL = 'https://t.emergencycashpro.com/lc';
+
+  function pickWeightedCity(weights) {
+    if (!weights || !weights.length) return null;
+    const r = Math.random();
+    let acc = 0;
+    for (const { city, weight } of weights) {
+      acc += weight;
+      if (r <= acc) return city;
+    }
+    return weights[weights.length - 1].city;
+  }
+
+  function randomAmount() {
+    // $12,000 – $40,000 in $500 increments
+    const steps = Math.floor(Math.random() * ((40000 - 12000) / 500 + 1));
+    return `$${(12000 + steps * 500).toLocaleString()}`;
+  }
+
+  function randomTimeAgo() {
+    const mins = Math.floor(Math.random() * 14) + 1; // 1–14 min ago
+    return `${mins} min ago`;
+  }
+
+  function buildPopup() {
+    if (!data.popupNames || !data.popupNames.length) return null;
+    const name = data.popupNames[Math.floor(Math.random() * data.popupNames.length)];
+    const city = data.popupCities && data.popupCities.length
+      ? pickWeightedCity(data.popupCities)
+      : (data.state || 'USA');
+    return {
+      name,
+      city,
+      amount: randomAmount(),
+      timeAgo: randomTimeAgo(),
+    };
+  }
 
   function selectAmount(amount) {
     if (selectedAmount === amount) {
@@ -87,11 +129,31 @@
       document.fonts.ready.then(fitHeadline).catch(() => {});
     }
 
+    // Approval popup scheduler. Shows a new random popup every 8–14s for
+    // 5s, then hides it for a 2–4s gap before the next one. Never two in a
+    // row for the same name/city. Uses timeouts so hidden-tab doesn't spam.
+    let popupTimer;
+    let popupHideTimer;
+    function schedulePopup(initialDelay) {
+      popupTimer = setTimeout(() => {
+        popup = buildPopup();
+        popupVisible = true;
+        popupHideTimer = setTimeout(() => {
+          popupVisible = false;
+          // Gap between popups
+          schedulePopup(2000 + Math.random() * 2000);
+        }, 5000);
+      }, initialDelay);
+    }
+    schedulePopup(4000); // first popup 4s after mount
+
     return () => {
       observer.disconnect();
       clearTimeout(t);
       window.removeEventListener('resize', onResize);
       clearTimeout(resizeTimer);
+      clearTimeout(popupTimer);
+      clearTimeout(popupHideTimer);
     };
   });
 </script>
@@ -366,6 +428,27 @@
       <p>This website is not a lender and does not make loans or credit decisions. We connect consumers with independent third-party lenders. Loan terms, rates, and approval are determined by individual lenders based on your application.</p>
     </div>
   </footer>
+
+  <!-- APPROVAL POPUP (bottom-left, above sticky CTA) -->
+  {#if popup}
+    <div
+      class="approval-popup fixed left-3 z-[55] w-[calc(100%-1.5rem)] sm:w-72 rounded-xl bg-white shadow-2xl border border-gray-200 p-3 flex items-center gap-3 {popupVisible ? 'show' : ''}"
+      role="status"
+      aria-live="polite"
+    >
+      <div class="flex-shrink-0 h-9 w-9 rounded-full bg-green-100 flex items-center justify-center">
+        <svg class="h-5 w-5 text-green-600" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clip-rule="evenodd"/></svg>
+      </div>
+      <div class="min-w-0 flex-1">
+        <p class="text-sm font-semibold text-gray-900 truncate">
+          {popup.name} from {popup.city}
+        </p>
+        <p class="text-xs text-gray-500">
+          Approved for <span class="font-semibold text-green-600">{popup.amount}</span> &middot; {popup.timeAgo}
+        </p>
+      </div>
+    </div>
+  {/if}
 
   <!-- STICKY CTA -->
   <div class="sticky-cta fixed bottom-0 left-0 w-full z-50 bg-white/95 backdrop-blur border-t border-gray-200 py-3 px-4 shadow-2xl {showSticky ? 'visible' : ''}">

@@ -19,6 +19,24 @@ html, body {
   white-space: nowrap;
 }
 
+/* Approval popup toast — sits above the fixed bottom CTA bar. Slides in
+   from the left with a soft fade. Bottom offset matches the sticky CTA
+   height (~100px) so they don't overlap. */
+.approval-popup {
+  bottom: 108px;
+  opacity: 0;
+  transform: translateX(-24px);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+  pointer-events: none;
+}
+.approval-popup.show {
+  opacity: 1;
+  transform: translateX(0);
+}
+@media (min-width: 640px) {
+  .approval-popup { bottom: 110px; left: 1.25rem; }
+}
+
 
 .amount-btn {
   transition: all 0.2s ease;

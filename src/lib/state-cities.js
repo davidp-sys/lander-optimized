@@ -70,6 +70,24 @@ export const TICKER_NAMES = [
   'Brittany N.',
 ];
 
+// Separate pool for the bottom-left approval toast popup. Distinct from
+// TICKER_NAMES so the ticker and popup don't overlap / feel like the same
+// 10 people.
+export const POPUP_NAMES = [
+  'Anthony G.',
+  'Rachel D.',
+  'Kevin H.',
+  'Megan F.',
+  'Tyler S.',
+  'Olivia P.',
+  'Brandon J.',
+  'Nicole V.',
+  'Ethan C.',
+  'Hannah L.',
+  'Derrick M.',
+  'Stephanie O.',
+];
+
 // Ten varied loan amounts, paired to names in order.
 export const TICKER_AMOUNTS = [
   '$12,500', '$8,000', '$22,000', '$18,500', '$30,000',
@@ -147,6 +165,17 @@ export function buildStateTicker(stateName) {
     amount: TICKER_AMOUNTS[i],
     time: TICKER_TIMES[i],
   }));
+}
+
+// Weighted city list for the popup — same pop ** 0.6 damping as the ticker
+// so popups are realistically distributed (Seattle shows up more than
+// Spokane in WA, but not 10x more). Returns [{ city, weight }] summing to 1.
+export function buildPopupCityWeights(stateName) {
+  const cities = STATE_CITIES[stateName];
+  if (!cities || cities.length === 0) return null;
+  const weighted = cities.map(([city, pop]) => [city, Math.pow(pop, POP_EXPONENT)]);
+  const total = weighted.reduce((s, [, w]) => s + w, 0);
+  return weighted.map(([city, w]) => ({ city, weight: w / total }));
 }
 
 // Fallback ticker for non-US visitors or when state lookup fails — uses

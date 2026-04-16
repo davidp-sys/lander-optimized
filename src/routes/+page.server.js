@@ -3,7 +3,7 @@
 // state via ipwho.is. Falls back to null if anything fails — page still renders.
 
 import mapSvgRaw from '$lib/us-map.svg?raw';
-import { buildStateTicker, FALLBACK_TICKER } from '$lib/state-cities.js';
+import { buildStateTicker, FALLBACK_TICKER, buildPopupCityWeights, POPUP_NAMES } from '$lib/state-cities.js';
 
 export const prerender = false;
 
@@ -251,6 +251,11 @@ export async function load({ request, getClientAddress, fetch, url }) {
   // so Las Vegas visitors see mostly Las Vegas, LA visitors see mostly LA, etc.
   const ticker = buildStateTicker(state) || FALLBACK_TICKER;
 
+  // Popup toast uses a weighted city list (same dampening as the ticker) and
+  // a separate name pool. The client picks a random city from the weights
+  // and a random name from the pool on each popup appearance.
+  const popupCities = buildPopupCityWeights(state);
+
   console.log(`[geo] ip=${ip} state=${state} code=${stateCode} country=${country} src=${lookupSource} err=${lookupError || 'none'}`);
 
   return {
@@ -258,6 +263,8 @@ export async function load({ request, getClientAddress, fetch, url }) {
     stateCode,
     mapSvg,
     ticker,
+    popupCities,
+    popupNames: POPUP_NAMES,
     debug: debug ? { ip, state, stateCode, country, lookupSource, lookupError, raw, headers: Object.fromEntries(request.headers) } : null,
   };
 }
