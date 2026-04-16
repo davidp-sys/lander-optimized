@@ -46,7 +46,7 @@ html, body {
   transform: translateY(0);
 }
 .approval-popup.cta-visible {
-  bottom: 128px;          /* above the sticky CTA once it slides in */
+  bottom: 114px;          /* above the sticky CTA, tight gap (~14px) */
 }
 @media (min-width: 640px) {
   /* Desktop: anchored to the true bottom-left corner regardless of CTA
