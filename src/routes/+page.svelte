@@ -114,10 +114,10 @@
     <div class="flex whitespace-nowrap">
       <div class="ticker-scroll flex gap-8 text-sm text-gray-300">
         {#each data.ticker as item}
-          <span class="flex items-center gap-2"><span class="h-2 w-2 rounded-full bg-green-400"></span> {item.name} ({item.city}) approved for {item.amount} &mdash; {item.time}</span>
+          <span class="flex items-center gap-2"><span class="h-2 w-2 rounded-full bg-green-400"></span> {item.name} ({item.city}) {item.amount} &mdash; {item.time}</span>
         {/each}
         {#each data.ticker as item}
-          <span class="flex items-center gap-2"><span class="h-2 w-2 rounded-full bg-green-400"></span> {item.name} ({item.city}) approved for {item.amount} &mdash; {item.time}</span>
+          <span class="flex items-center gap-2"><span class="h-2 w-2 rounded-full bg-green-400"></span> {item.name} ({item.city}) {item.amount} &mdash; {item.time}</span>
         {/each}
       </div>
     </div>
