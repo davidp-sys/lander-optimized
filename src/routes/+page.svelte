@@ -185,9 +185,9 @@
   </div>
 
   <!-- HERO SECTION -->
-  <section class="relative overflow-hidden bg-gradient-to-br from-indigo-100 via-purple-100 to-blue-100 dark:from-[#0a0e1a] dark:via-[#1e1b4b] dark:to-[#0f172a] min-h-screen md:min-h-0">
-    <div class="absolute left-0 top-0 h-[500px] w-[500px] rounded-full bg-gradient-to-br from-blue-300/20 to-indigo-400/20 dark:from-indigo-500/20 dark:to-violet-500/10 blur-3xl pointer-events-none" aria-hidden="true"></div>
-    <div class="absolute right-0 top-20 h-96 w-96 rounded-full bg-gradient-to-br from-purple-300/20 to-pink-300/20 dark:from-violet-500/15 dark:to-fuchsia-500/10 blur-3xl pointer-events-none" aria-hidden="true"></div>
+  <section class="relative overflow-hidden bg-gradient-to-br from-indigo-100 via-purple-100 to-blue-100 dark:from-[#0f1029] dark:via-[#241a52] dark:to-[#0f1029] min-h-screen md:min-h-0">
+    <div class="absolute left-0 top-0 h-[500px] w-[500px] rounded-full bg-gradient-to-br from-blue-300/20 to-indigo-400/20 dark:from-indigo-500/30 dark:to-violet-500/20 blur-3xl pointer-events-none" aria-hidden="true"></div>
+    <div class="absolute right-0 top-20 h-96 w-96 rounded-full bg-gradient-to-br from-purple-300/20 to-pink-300/20 dark:from-violet-500/25 dark:to-fuchsia-500/15 blur-3xl pointer-events-none" aria-hidden="true"></div>
 
     <div class="relative mx-auto max-w-7xl px-4 py-6 md:py-14">
       <div class="flex flex-col items-center gap-5 lg:flex-row lg:gap-12">
@@ -196,7 +196,7 @@
         <div class="flex-1 text-center lg:text-left">
           <h1 bind:this={headlineEl} class="mb-2 font-black leading-tight tracking-tight text-gray-900 dark:text-white {data.state ? 'state-headline' : 'text-4xl md:text-5xl lg:text-6xl'}">
             {#if data.state}
-              <span class="headline-line"><span class="text-indigo-600 dark:bg-gradient-to-r dark:from-indigo-400 dark:to-violet-400 dark:bg-clip-text dark:text-transparent">{data.state}</span> residents</span>
+              <span class="headline-line"><span class="text-indigo-600 dark:text-indigo-400">{data.state}</span> residents</span>
               <span class="headline-line">can secure up to <span class="text-indigo-600 glisten-text">$40,000</span></span>
             {:else}
               Secure Up To<br class="md:hidden"><span class="hidden md:inline"> </span><span class="text-indigo-600 glisten-text">$40,000</span>
@@ -207,7 +207,7 @@
             Banks can't deny you from applying.<br>Get approved in minutes.
           </p>
 
-          <div class="geo-pill {geoRevealed ? 'revealed' : ''} mb-2 inline-flex items-center gap-2.5 rounded-lg bg-indigo-50 border border-indigo-300 dark:bg-white/5 dark:backdrop-blur-sm dark:border-indigo-400/30 dark:text-indigo-300 px-4 py-1.5 text-sm font-medium text-indigo-700">
+          <div class="geo-pill {geoRevealed ? 'revealed' : ''} mb-2 inline-flex items-center gap-2.5 rounded-lg bg-indigo-50 border border-indigo-300 dark:bg-indigo-500/10 dark:border-indigo-400/50 dark:text-indigo-300 px-4 py-1.5 text-sm font-medium text-indigo-700">
             <span class="radar-dot"></span>
             {#if !geoRevealed}
               <span class="geo-scanning-text">Checking availability<span class="scanning-dots"></span></span>
@@ -218,18 +218,18 @@
             {/if}
           </div>
 
-          <div class="mb-4 inline-flex items-center gap-2 rounded-lg bg-orange-50 border border-orange-300 dark:bg-white/5 dark:backdrop-blur-sm dark:border-orange-400/40 dark:text-orange-300 px-4 py-1.5 text-sm font-medium text-orange-700">
+          <div class="mb-4 inline-flex items-center gap-2 rounded-lg bg-orange-50 border border-orange-300 dark:bg-orange-500/10 dark:border-orange-400/50 dark:text-orange-300 px-4 py-1.5 text-sm font-medium text-orange-700">
             <span class="pulse-dot inline-block h-2 w-2 rounded-full bg-orange-500"></span>
             <span><strong>{urgencyCount} people</strong> checking their amount right now</span>
           </div>
 
           <!-- MICRO-FORM -->
-          <div class="mb-4 rounded-2xl bg-white dark:bg-white/5 dark:backdrop-blur-xl p-5 shadow-2xl border border-gray-300 dark:border-white/10 dark:shadow-indigo-500/10 relative z-10" id="loan-form">
+          <div class="mb-4 rounded-2xl bg-white dark:bg-slate-900/60 dark:backdrop-blur-xl p-5 shadow-2xl border border-gray-300 dark:border-indigo-400/20 dark:shadow-indigo-500/20 relative z-10" id="loan-form">
             <p class="mb-2 text-base font-semibold text-gray-800 dark:text-slate-100">How much do you need?</p>
             <div class="flex gap-2">
               {#each [10000, 20000, 30000, 40000] as amount}
                 <button
-                  class="amount-btn flex-1 rounded-lg border-2 py-3 text-center font-bold text-2xl {selectedAmount === amount ? 'selected border-indigo-600 bg-indigo-600 text-white' : 'border-indigo-200 bg-indigo-50 text-indigo-700 dark:border-indigo-400/30 dark:bg-white/5 dark:text-indigo-300'}"
+                  class="amount-btn flex-1 rounded-lg border-2 py-3 text-center font-bold text-2xl {selectedAmount === amount ? 'selected border-indigo-600 bg-indigo-600 text-white' : 'border-indigo-200 bg-indigo-50 text-indigo-700 dark:border-indigo-400/40 dark:bg-indigo-500/10 dark:text-indigo-200'}"
                   onclick={() => selectAmount(amount)}
                 >
                   ${(amount / 1000).toFixed(0)}k
@@ -251,7 +251,7 @@
 
         <!-- RIGHT: Social proof card -->
         <div class="flex-1 max-w-md w-full">
-          <div class="rounded-2xl bg-white dark:bg-white/5 dark:backdrop-blur-xl p-5 shadow-2xl border border-gray-300 dark:border-white/10 dark:shadow-indigo-500/10 relative z-10">
+          <div class="rounded-2xl bg-white dark:bg-slate-900/60 dark:backdrop-blur-xl p-5 shadow-2xl border border-gray-300 dark:border-indigo-400/20 dark:shadow-indigo-500/20 relative z-10">
             <!-- Google Maps embed centered on visitor's state -->
             <div class="mb-4">
               <div class="relative rounded-xl overflow-hidden border border-indigo-100 dark:border-white/10 shadow-sm" style="aspect-ratio: 16 / 11;">
@@ -348,7 +348,7 @@
       <div class="mx-auto max-w-6xl px-4 md:px-6">
         <h2 class="mb-8 text-center text-2xl font-bold text-gray-900 dark:text-white md:text-3xl">Real People. Real Approvals.</h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
-          <div class="min-w-0 rounded-2xl bg-white dark:bg-white/5 dark:backdrop-blur-xl p-5 shadow-xl border border-gray-200 dark:border-white/10">
+          <div class="min-w-0 rounded-2xl bg-white dark:bg-slate-900/60 dark:backdrop-blur-xl p-5 shadow-xl border border-gray-200 dark:border-indigo-400/20">
             <div class="flex items-center gap-1 mb-2 text-yellow-400 dark:text-amber-400 text-sm">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
             <p class="text-gray-700 dark:text-slate-300 mb-4 text-sm">"I was drowning in credit card debt and my score was 580. Got matched with a lender in 5 minutes and had $20,000 deposited in 2 days."</p>
             <div class="flex items-center gap-3 border-t border-gray-100 dark:border-white/10 pt-3">
@@ -359,7 +359,7 @@
               </div>
             </div>
           </div>
-          <div class="min-w-0 rounded-2xl bg-white dark:bg-white/5 dark:backdrop-blur-xl p-5 shadow-xl border border-gray-200 dark:border-white/10">
+          <div class="min-w-0 rounded-2xl bg-white dark:bg-slate-900/60 dark:backdrop-blur-xl p-5 shadow-xl border border-gray-200 dark:border-indigo-400/20">
             <div class="flex items-center gap-1 mb-2 text-yellow-400 dark:text-amber-400 text-sm">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
             <p class="text-gray-700 dark:text-slate-300 mb-4 text-sm">"I thought I'd get denied because I'm behind on my car payment. Checked my amount anyway and got approved for $12,000. Total game changer."</p>
             <div class="flex items-center gap-3 border-t border-gray-100 dark:border-white/10 pt-3">
@@ -370,7 +370,7 @@
               </div>
             </div>
           </div>
-          <div class="min-w-0 rounded-2xl bg-white dark:bg-white/5 dark:backdrop-blur-xl p-5 shadow-xl border border-gray-200 dark:border-white/10">
+          <div class="min-w-0 rounded-2xl bg-white dark:bg-slate-900/60 dark:backdrop-blur-xl p-5 shadow-xl border border-gray-200 dark:border-indigo-400/20">
             <div class="flex items-center gap-1 mb-2 text-yellow-400 dark:text-amber-400 text-sm">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
             <p class="text-gray-700 dark:text-slate-300 mb-4 text-sm">"My bank said no. This site connected me to a lender that said yes in minutes. No hard credit check, no stress. Wish I found this sooner."</p>
             <div class="flex items-center gap-3 border-t border-gray-100 dark:border-white/10 pt-3">
@@ -431,7 +431,7 @@
   <!-- APPROVAL POPUP (bottom-left, above sticky CTA) -->
   {#if popup}
     <div
-      class="approval-popup fixed z-[60] rounded-xl bg-white dark:bg-slate-900/90 dark:backdrop-blur-xl shadow-2xl border border-gray-200 dark:border-white/10 dark:shadow-indigo-500/20 p-3 flex items-center gap-3 {popupVisible ? 'show' : ''} {showSticky ? 'cta-visible' : ''}"
+      class="approval-popup fixed z-[60] rounded-xl bg-white dark:bg-slate-900/95 dark:backdrop-blur-xl shadow-2xl border border-gray-200 dark:border-indigo-400/30 dark:shadow-indigo-500/30 p-3 flex items-center gap-3 {popupVisible ? 'show' : ''} {showSticky ? 'cta-visible' : ''}"
       role="status"
       aria-live="polite"
     >
