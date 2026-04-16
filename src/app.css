@@ -26,21 +26,34 @@ html, body {
      viewport. Positioned to overlap the empty left side of the sticky CTA
      bar (CTA button is center-aligned, so the left of the bar is empty). */
 .approval-popup {
-  bottom: 128px;          /* above sticky CTA with ~20px buffer on mobile */
+  /* On mobile: sits at the very bottom on initial load (CTA hidden).
+     When the sticky CTA slides in (`cta-visible` class), the popup rides
+     up above it. Transition on bottom keeps the motion in sync with the
+     CTA's translateY slide-in (both 0.3–0.35s ease). */
+  bottom: 1rem;
   left: 0.75rem;
   right: 0.75rem;
   opacity: 0;
   transform: translateY(8px);
-  transition: opacity 0.35s ease, transform 0.35s ease;
+  transition:
+    opacity 0.35s ease,
+    transform 0.35s ease,
+    bottom 0.35s ease;
   pointer-events: none;
 }
 .approval-popup.show {
   opacity: 1;
   transform: translateY(0);
 }
+.approval-popup.cta-visible {
+  bottom: 128px;          /* above the sticky CTA once it slides in */
+}
 @media (min-width: 640px) {
-  .approval-popup {
-    bottom: 1rem;         /* true bottom-left corner on desktop */
+  /* Desktop: anchored to the true bottom-left corner regardless of CTA
+     state — CTA button is centered so there's no collision. */
+  .approval-popup,
+  .approval-popup.cta-visible {
+    bottom: 1rem;
     left: 1rem;
     right: auto;
     width: 20rem;
