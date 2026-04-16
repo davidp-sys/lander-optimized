@@ -82,13 +82,18 @@ export const TICKER_TIMES = [
   '17 min ago', '21 min ago', '24 min ago', '28 min ago', '32 min ago',
 ];
 
-// Largest-remainder apportionment: distribute `totalSlots` across cities
-// proportional to population. Handles rounding so counts sum to exactly
-// totalSlots. Same method used for US House seats, Germany's Bundestag, etc.
+// Largest-remainder apportionment, with a population-dampening exponent so
+// dominant cities (Seattle, LA, NYC) don't eat half the slots. We weight by
+// `pop ** POP_EXPONENT` instead of raw population — exponent < 1 compresses
+// the spread. 0.6 is tuned so Seattle drops from ~5/10 slots to ~3/10 while
+// keeping the order correct (biggest city still wins most slots).
+const POP_EXPONENT = 0.6;
+
 function distributeByPopulation(cities, totalSlots) {
-  const totalPop = cities.reduce((s, [, p]) => s + p, 0);
-  const rows = cities.map(([city, pop]) => {
-    const exact = (pop / totalPop) * totalSlots;
+  const weighted = cities.map(([city, pop]) => [city, pop, Math.pow(pop, POP_EXPONENT)]);
+  const totalWeight = weighted.reduce((s, [, , w]) => s + w, 0);
+  const rows = weighted.map(([city, pop, weight]) => {
+    const exact = (weight / totalWeight) * totalSlots;
     const floor = Math.floor(exact);
     return { city, pop, floor, frac: exact - floor };
   });

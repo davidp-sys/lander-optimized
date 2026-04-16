@@ -45,7 +45,12 @@ html, body {
 }
 
 .ticker-scroll {
-  animation: tickerScroll 20s linear infinite;
+  /* Mobile: slower so it's legible on smaller screens */
+  animation: tickerScroll 32s linear infinite;
+}
+@media (min-width: 768px) {
+  /* Desktop: normal speed since there's more horizontal space */
+  .ticker-scroll { animation: tickerScroll 20s linear infinite; }
 }
 @keyframes tickerScroll {
   0% { transform: translateX(0); }
