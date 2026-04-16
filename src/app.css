@@ -6,45 +6,6 @@ html, body {
   max-width: 100vw;
 }
 
-/* Dark mode: auto-follow user's browser / OS preference. Handles only the
-   custom CSS here — tailwind `dark:` utilities are applied inline in the
-   markup for backgrounds/text colors. */
-@media (prefers-color-scheme: dark) {
-  html { color-scheme: dark; }
-
-  /* Glisten text uses a light-mode gradient; swap to indigo-400 base with
-     a lighter highlight that shows against the dark background. */
-  .glisten-text {
-    color: #818cf8; /* indigo-400 */
-    background: linear-gradient(90deg, #818cf8 0%, #818cf8 40%, #e0e7ff 50%, #818cf8 60%, #818cf8 100%);
-    background-size: 200% 100%;
-    background-position: 100% 0;
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-
-  /* Geo pill revealed state — swap light-green palette for translucent dark */
-  .geo-pill.revealed {
-    background-color: rgba(16, 185, 129, 0.12);
-    border-color: rgba(16, 185, 129, 0.45);
-    color: #6ee7b7; /* green-300 */
-  }
-
-  /* Radar dot ring color matches the new indigo-400 accent */
-  .radar-dot { background: #818cf8; }
-  .radar-dot::before,
-  .radar-dot::after { border-color: #818cf8; }
-  .geo-pill.revealed .radar-dot { background: #34d399; /* green-400 */ }
-
-  /* US map (SVG fallback): invert the indigo fills to lighter so state
-     outlines read against the dark page */
-  .us-map svg .state,
-  .us-map svg g.state > path:not([fill]) { fill: #334155; /* slate-700 */ }
-  .us-map svg path[class*="-"] { stroke: #475569; /* slate-600 */ }
-  .us-map svg .borders { stroke: #64748b; /* slate-500 */ }
-}
-
 /* Geo headline. Initial font-size from clamp() is a server-side fallback so
    the SSR'd HTML looks reasonable before JS hydrates and runs fitHeadline().
    On hydration, fitHeadline() in +page.svelte sets an exact pixel font-size
