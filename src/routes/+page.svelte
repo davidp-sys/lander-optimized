@@ -179,7 +179,7 @@
             <div class="flex gap-2">
               {#each [10000, 20000, 30000, 40000] as amount}
                 <button
-                  class="amount-btn flex-1 rounded-lg border-2 py-2 text-center font-bold text-sm {selectedAmount === amount ? 'selected border-indigo-600 bg-indigo-600 text-white' : 'border-indigo-200 bg-indigo-50 text-indigo-700'}"
+                  class="amount-btn flex-1 rounded-lg border-2 py-3 text-center font-bold text-2xl {selectedAmount === amount ? 'selected border-indigo-600 bg-indigo-600 text-white' : 'border-indigo-200 bg-indigo-50 text-indigo-700'}"
                   onclick={() => selectAmount(amount)}
                 >
                   ${(amount / 1000).toFixed(0)}k
