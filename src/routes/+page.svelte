@@ -106,29 +106,18 @@
     <pre class="fixed top-2 right-2 z-[9999] max-w-lg max-h-[80vh] overflow-auto bg-black/90 text-green-300 text-xs p-3 rounded shadow-2xl whitespace-pre-wrap break-words">{JSON.stringify(data.debug, null, 2)}</pre>
   {/if}
 
-  <!-- APPROVAL TICKER (top of page) -->
+  <!-- APPROVAL TICKER (top of page) — 10 rolling entries, city-weighted
+       by population within the visitor's detected state. Built server-side
+       in +page.server.js via buildStateTicker(). Duplicated inline so the
+       scroll loop has enough content to seamlessly repeat. -->
   <div class="bg-gray-900 py-3 overflow-hidden">
     <div class="flex whitespace-nowrap">
       <div class="ticker-scroll flex gap-8 text-sm text-gray-300">
-        {#each [
-          { name: 'James R.', state: 'FL', amount: '$12,500', time: '2 min ago' },
-          { name: 'Maria L.', state: 'CA', amount: '$30,000', time: '5 min ago' },
-          { name: 'David K.', state: 'TX', amount: '$8,000', time: '8 min ago' },
-          { name: 'Linda P.', state: 'OH', amount: '$22,000', time: '11 min ago' },
-          { name: 'Marcus W.', state: 'GA', amount: '$40,000', time: '14 min ago' },
-          { name: 'Amy T.', state: 'AZ', amount: '$18,500', time: '17 min ago' },
-        ] as item}
-          <span class="flex items-center gap-2"><span class="h-2 w-2 rounded-full bg-green-400"></span> {item.name} ({item.state}) approved for {item.amount} &mdash; {item.time}</span>
+        {#each data.ticker as item}
+          <span class="flex items-center gap-2"><span class="h-2 w-2 rounded-full bg-green-400"></span> {item.name} ({item.city}) approved for {item.amount} &mdash; {item.time}</span>
         {/each}
-        {#each [
-          { name: 'James R.', state: 'FL', amount: '$12,500', time: '2 min ago' },
-          { name: 'Maria L.', state: 'CA', amount: '$30,000', time: '5 min ago' },
-          { name: 'David K.', state: 'TX', amount: '$8,000', time: '8 min ago' },
-          { name: 'Linda P.', state: 'OH', amount: '$22,000', time: '11 min ago' },
-          { name: 'Marcus W.', state: 'GA', amount: '$40,000', time: '14 min ago' },
-          { name: 'Amy T.', state: 'AZ', amount: '$18,500', time: '17 min ago' },
-        ] as item}
-          <span class="flex items-center gap-2"><span class="h-2 w-2 rounded-full bg-green-400"></span> {item.name} ({item.state}) approved for {item.amount} &mdash; {item.time}</span>
+        {#each data.ticker as item}
+          <span class="flex items-center gap-2"><span class="h-2 w-2 rounded-full bg-green-400"></span> {item.name} ({item.city}) approved for {item.amount} &mdash; {item.time}</span>
         {/each}
       </div>
     </div>

@@ -3,6 +3,7 @@
 // state via ipwho.is. Falls back to null if anything fails — page still renders.
 
 import mapSvgRaw from '$lib/us-map.svg?raw';
+import { buildStateTicker, FALLBACK_TICKER } from '$lib/state-cities.js';
 
 export const prerender = false;
 
@@ -246,12 +247,17 @@ export async function load({ request, getClientAddress, fetch, url }) {
   const viewBox = computeViewBox(mapSvgRaw, stateCode);
   const mapSvg = injectStateHighlight(normalizeSvg(mapSvgRaw, viewBox), stateCode);
 
+  // Per-state approval ticker: 10 entries, city mix weighted by population
+  // so Las Vegas visitors see mostly Las Vegas, LA visitors see mostly LA, etc.
+  const ticker = buildStateTicker(state) || FALLBACK_TICKER;
+
   console.log(`[geo] ip=${ip} state=${state} code=${stateCode} country=${country} src=${lookupSource} err=${lookupError || 'none'}`);
 
   return {
     state,
     stateCode,
     mapSvg,
+    ticker,
     debug: debug ? { ip, state, stateCode, country, lookupSource, lookupError, raw, headers: Object.fromEntries(request.headers) } : null,
   };
 }
