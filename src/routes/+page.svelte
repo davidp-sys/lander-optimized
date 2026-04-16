@@ -284,10 +284,10 @@
 
     <!-- TESTIMONIALS -->
     <div class="relative pb-14 md:pb-20">
-      <div class="mx-auto max-w-7xl px-8 md:px-4">
+      <div class="mx-auto max-w-6xl px-4 md:px-6">
         <h2 class="mb-8 text-center text-2xl font-bold text-gray-900 md:text-3xl">Real People. Real Approvals.</h2>
-        <div class="grid gap-5 md:grid-cols-3 max-w-xs mx-auto md:max-w-none">
-          <div class="rounded-2xl bg-white p-5 shadow-xl border border-gray-200">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+          <div class="min-w-0 rounded-2xl bg-white p-5 shadow-xl border border-gray-200">
             <div class="flex items-center gap-1 mb-2 text-yellow-400 text-sm">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
             <p class="text-gray-700 mb-4 text-sm">"I was drowning in credit card debt and my score was 580. Got matched with a lender in 5 minutes and had $20,000 deposited in 2 days."</p>
             <div class="flex items-center gap-3 border-t border-gray-100 pt-3">
@@ -298,7 +298,7 @@
               </div>
             </div>
           </div>
-          <div class="rounded-2xl bg-white p-5 shadow-xl border border-gray-200">
+          <div class="min-w-0 rounded-2xl bg-white p-5 shadow-xl border border-gray-200">
             <div class="flex items-center gap-1 mb-2 text-yellow-400 text-sm">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
             <p class="text-gray-700 mb-4 text-sm">"I thought I'd get denied because I'm behind on my car payment. Checked my amount anyway and got approved for $12,000. Total game changer."</p>
             <div class="flex items-center gap-3 border-t border-gray-100 pt-3">
@@ -309,7 +309,7 @@
               </div>
             </div>
           </div>
-          <div class="rounded-2xl bg-white p-5 shadow-xl border border-gray-200">
+          <div class="min-w-0 rounded-2xl bg-white p-5 shadow-xl border border-gray-200">
             <div class="flex items-center gap-1 mb-2 text-yellow-400 text-sm">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
             <p class="text-gray-700 mb-4 text-sm">"My bank said no. This site connected me to a lender that said yes in minutes. No hard credit check, no stress. Wish I found this sooner."</p>
             <div class="flex items-center gap-3 border-t border-gray-100 pt-3">
