@@ -129,9 +129,8 @@
       document.fonts.ready.then(fitHeadline).catch(() => {});
     }
 
-    // Approval popup scheduler. Shows a new random popup every 8–14s for
-    // 5s, then hides it for a 2–4s gap before the next one. Never two in a
-    // row for the same name/city. Uses timeouts so hidden-tab doesn't spam.
+    // Approval popup scheduler. First popup fires 2s after mount; each
+    // popup is visible 5s, then hides for a 0.5–2.5s gap before the next.
     let popupTimer;
     let popupHideTimer;
     function schedulePopup(initialDelay) {
@@ -140,12 +139,12 @@
         popupVisible = true;
         popupHideTimer = setTimeout(() => {
           popupVisible = false;
-          // Gap between popups
-          schedulePopup(2000 + Math.random() * 2000);
+          // Gap between popups (reduced by 1.5s from previous 2–4s)
+          schedulePopup(500 + Math.random() * 2000);
         }, 5000);
       }, initialDelay);
     }
-    schedulePopup(4000); // first popup 4s after mount
+    schedulePopup(2000); // first popup 2s after mount
 
     return () => {
       observer.disconnect();
