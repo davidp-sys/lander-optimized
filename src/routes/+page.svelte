@@ -197,7 +197,7 @@
           <h1 bind:this={headlineEl} class="mb-2 font-black leading-tight tracking-tight text-gray-900 dark:text-white {data.state ? 'state-headline' : 'text-4xl md:text-5xl lg:text-6xl'}">
             {#if data.state}
               <span class="headline-line"><span class="text-indigo-600 dark:text-indigo-400">{data.state}</span> residents</span>
-              <span class="headline-line">can secure up to <span class="text-indigo-600 glisten-text">$40,000</span></span>
+              <span class="headline-line">may qualify for up to <span class="text-indigo-600 glisten-text">$40,000</span></span>
             {:else}
               Secure Up To<br class="md:hidden"><span class="hidden md:inline"> </span><span class="text-indigo-600 glisten-text">$40,000</span>
             {/if}
@@ -278,7 +278,7 @@
               </div>
               <p class="mt-2 text-center text-sm font-semibold text-gray-700 dark:text-slate-300">
                 {#if data.state}
-                  <span class="text-indigo-600 dark:text-indigo-400">{data.state}</span> residents qualify for up to <span class="text-indigo-600 dark:text-indigo-400">$40,000</span>
+                  <span class="text-indigo-600 dark:text-indigo-400">{data.state}</span> residents may qualify for up to <span class="text-indigo-600 dark:text-indigo-400">$40,000</span>
                 {:else}
                   Available in all 50 states
                 {/if}
