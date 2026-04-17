@@ -184,10 +184,10 @@
     </div>
   </div>
 
-  <!-- HERO SECTION -->
-  <section class="relative overflow-hidden bg-gradient-to-br from-indigo-100 via-purple-100 to-blue-100 dark:from-[#0f1029] dark:via-[#241a52] dark:to-[#0f1029] min-h-screen md:min-h-0">
-    <div class="absolute left-0 top-0 h-[500px] w-[500px] rounded-full bg-gradient-to-br from-blue-300/20 to-indigo-400/20 dark:from-indigo-500/30 dark:to-violet-500/20 blur-3xl pointer-events-none" aria-hidden="true"></div>
-    <div class="absolute right-0 top-20 h-96 w-96 rounded-full bg-gradient-to-br from-purple-300/20 to-pink-300/20 dark:from-violet-500/25 dark:to-fuchsia-500/15 blur-3xl pointer-events-none" aria-hidden="true"></div>
+  <!-- HERO SECTION — ambient glow rendered as CSS radial-gradients (not
+       DOM blur blobs) so it's identical across Brave/Safari/Chrome.
+       Radial gradients don't require GPU filter processing. -->
+  <section class="hero-bg relative overflow-hidden min-h-screen md:min-h-0">
 
     <div class="relative mx-auto max-w-7xl px-4 py-6 md:py-14">
       <div class="flex flex-col items-center gap-5 lg:flex-row lg:gap-12">
@@ -224,7 +224,7 @@
           </div>
 
           <!-- MICRO-FORM -->
-          <div class="mb-4 rounded-2xl bg-white dark:bg-slate-900/60 dark:backdrop-blur-xl p-5 shadow-2xl border border-gray-300 dark:border-indigo-400/20 dark:shadow-indigo-500/20 relative z-10" id="loan-form">
+          <div class="mb-4 rounded-2xl bg-white dark:bg-slate-900/80 p-5 shadow-2xl border border-gray-300 dark:border-indigo-400/20 dark:shadow-indigo-500/20 relative z-10" id="loan-form">
             <p class="mb-2 text-base font-semibold text-gray-800 dark:text-slate-100">How much do you need?</p>
             <div class="flex gap-2">
               {#each [10000, 20000, 30000, 40000] as amount}
@@ -251,7 +251,7 @@
 
         <!-- RIGHT: Social proof card -->
         <div class="flex-1 max-w-md w-full">
-          <div class="rounded-2xl bg-white dark:bg-slate-900/60 dark:backdrop-blur-xl p-5 shadow-2xl border border-gray-300 dark:border-indigo-400/20 dark:shadow-indigo-500/20 relative z-10">
+          <div class="rounded-2xl bg-white dark:bg-slate-900/80 p-5 shadow-2xl border border-gray-300 dark:border-indigo-400/20 dark:shadow-indigo-500/20 relative z-10">
             <!-- Google Maps embed centered on visitor's state -->
             <div class="mb-4">
               <div class="relative rounded-xl overflow-hidden border border-indigo-100 dark:border-white/10 shadow-sm" style="aspect-ratio: 16 / 11;">
@@ -317,9 +317,7 @@
   </section>
 
   <!-- CONTENT SECTION -->
-  <div class="relative overflow-hidden bg-gradient-to-br from-indigo-100 via-purple-100 to-blue-100 dark:from-[#0a0e1a] dark:via-[#14112e] dark:to-[#0a0e1a]">
-    <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-[600px] w-[600px] rounded-full bg-gradient-to-br from-blue-300/30 to-indigo-400/30 dark:from-indigo-500/15 dark:to-violet-500/10 blur-3xl pointer-events-none" aria-hidden="true"></div>
-    <div class="absolute left-1/2 top-1/2 -translate-x-1/3 -translate-y-1/3 h-[500px] w-[500px] rounded-full bg-gradient-to-br from-purple-300/25 to-pink-300/25 dark:from-violet-500/10 dark:to-fuchsia-500/10 blur-3xl pointer-events-none" aria-hidden="true"></div>
+  <div class="content-bg relative overflow-hidden">
 
     <!-- STATS BAND -->
     <div class="relative bg-indigo-600 dark:bg-gradient-to-r dark:from-indigo-700 dark:via-violet-700 dark:to-indigo-700 py-5 md:py-6">
@@ -348,7 +346,7 @@
       <div class="mx-auto max-w-6xl px-4 md:px-6">
         <h2 class="mb-8 text-center text-2xl font-bold text-gray-900 dark:text-white md:text-3xl">Real People. Real Approvals.</h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
-          <div class="min-w-0 rounded-2xl bg-white dark:bg-slate-900/60 dark:backdrop-blur-xl p-5 shadow-xl border border-gray-200 dark:border-indigo-400/20">
+          <div class="min-w-0 rounded-2xl bg-white dark:bg-slate-900/80 p-5 shadow-xl border border-gray-200 dark:border-indigo-400/20">
             <div class="flex items-center gap-1 mb-2 text-yellow-400 dark:text-amber-400 text-sm">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
             <p class="text-gray-700 dark:text-slate-300 mb-4 text-sm">"I was drowning in credit card debt and my score was 580. Got matched with a lender in 5 minutes and had $20,000 deposited in 2 days."</p>
             <div class="flex items-center gap-3 border-t border-gray-100 dark:border-white/10 pt-3">
@@ -359,7 +357,7 @@
               </div>
             </div>
           </div>
-          <div class="min-w-0 rounded-2xl bg-white dark:bg-slate-900/60 dark:backdrop-blur-xl p-5 shadow-xl border border-gray-200 dark:border-indigo-400/20">
+          <div class="min-w-0 rounded-2xl bg-white dark:bg-slate-900/80 p-5 shadow-xl border border-gray-200 dark:border-indigo-400/20">
             <div class="flex items-center gap-1 mb-2 text-yellow-400 dark:text-amber-400 text-sm">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
             <p class="text-gray-700 dark:text-slate-300 mb-4 text-sm">"I thought I'd get denied because I'm behind on my car payment. Checked my amount anyway and got approved for $12,000. Total game changer."</p>
             <div class="flex items-center gap-3 border-t border-gray-100 dark:border-white/10 pt-3">
@@ -370,7 +368,7 @@
               </div>
             </div>
           </div>
-          <div class="min-w-0 rounded-2xl bg-white dark:bg-slate-900/60 dark:backdrop-blur-xl p-5 shadow-xl border border-gray-200 dark:border-indigo-400/20">
+          <div class="min-w-0 rounded-2xl bg-white dark:bg-slate-900/80 p-5 shadow-xl border border-gray-200 dark:border-indigo-400/20">
             <div class="flex items-center gap-1 mb-2 text-yellow-400 dark:text-amber-400 text-sm">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
             <p class="text-gray-700 dark:text-slate-300 mb-4 text-sm">"My bank said no. This site connected me to a lender that said yes in minutes. No hard credit check, no stress. Wish I found this sooner."</p>
             <div class="flex items-center gap-3 border-t border-gray-100 dark:border-white/10 pt-3">
@@ -431,7 +429,7 @@
   <!-- APPROVAL POPUP (bottom-left, above sticky CTA) -->
   {#if popup}
     <div
-      class="approval-popup fixed z-[60] rounded-xl bg-white dark:bg-slate-900/95 dark:backdrop-blur-xl shadow-2xl border border-gray-200 dark:border-indigo-400/30 dark:shadow-indigo-500/30 p-3 flex items-center gap-3 {popupVisible ? 'show' : ''} {showSticky ? 'cta-visible' : ''}"
+      class="approval-popup fixed z-[60] rounded-xl bg-white dark:bg-slate-900 shadow-2xl border border-gray-200 dark:border-indigo-400/40 dark:shadow-indigo-500/30 p-3 flex items-center gap-3 {popupVisible ? 'show' : ''} {showSticky ? 'cta-visible' : ''}"
       role="status"
       aria-live="polite"
     >
@@ -450,7 +448,7 @@
   {/if}
 
   <!-- STICKY CTA -->
-  <div class="sticky-cta fixed bottom-0 left-0 w-full z-50 bg-white/95 dark:bg-slate-950/85 backdrop-blur-xl border-t border-gray-200 dark:border-white/10 py-3 px-4 shadow-2xl {showSticky ? 'visible' : ''}">
+  <div class="sticky-cta fixed bottom-0 left-0 w-full z-50 bg-white/95 dark:bg-slate-950 backdrop-blur-xl border-t border-gray-200 dark:border-indigo-400/20 py-3 px-4 shadow-2xl {showSticky ? 'visible' : ''}">
     <div class="flex flex-col items-center">
       <a href={CTA_URL} class="rounded-xl bg-indigo-600 dark:bg-gradient-to-r dark:from-indigo-500 dark:to-violet-500 px-10 py-3.5 text-base font-bold text-white shadow-lg dark:shadow-[0_8px_32px_-4px_rgba(99,102,241,0.5)] hover:bg-indigo-700 transition-colors">
         Check If You Qualify &rarr;
